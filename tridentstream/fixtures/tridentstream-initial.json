@@ -1,0 +1,326 @@
+[
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{}",
+      "name": "imgcache",
+      "plugin_name": "imgcache",
+      "plugin_type": "service",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 20
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{}",
+      "name": "player",
+      "plugin_name": "player",
+      "plugin_type": "service",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 21
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{}",
+      "name": "metadata",
+      "plugin_name": "metadata",
+      "plugin_type": "service",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 22
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"image_server\":20}",
+      "name": "imgcache",
+      "plugin_name": "imgcache",
+      "plugin_type": "imagecache",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 23
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{}",
+      "name": "historymetadata",
+      "plugin_name": "history",
+      "plugin_type": "metadatahandler",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 24
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"history_metadata\":24}",
+      "name": "history",
+      "plugin_name": "history",
+      "plugin_type": "history",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 25
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{}",
+      "name": "mal",
+      "plugin_name": "mal",
+      "plugin_type": "metadataparser",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 26
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"metadata_server\":22,\"image_cache\":23}",
+      "name": "mal",
+      "plugin_name": "mal",
+      "plugin_type": "metadatahandler",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 27
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{}",
+      "name": "guessit",
+      "plugin_name": "guessit",
+      "plugin_type": "iteminfo",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 28
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"item_infos\":[{\"priority\":10,\"item_info\":28}]}",
+      "name": "iteminfo",
+      "plugin_name": "iteminfo",
+      "plugin_type": "metadatahandler",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 29
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{}",
+      "name": "imdb",
+      "plugin_name": "imdb",
+      "plugin_type": "metadataparser",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 30
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"metadata_server\":22,\"image_cache\":23}",
+      "name": "imdb",
+      "plugin_name": "imdb",
+      "plugin_type": "metadatahandler",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 31
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"search_resolve\":\"tv\",\"metadata_server\":22,\"image_cache\":23}",
+      "name": "imdb_tv",
+      "plugin_name": "imdb",
+      "plugin_type": "metadatahandler",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 32
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"search_resolve\":\"movie\",\"metadata_server\":22,\"image_cache\":23}",
+      "name": "imdb_movie",
+      "plugin_name": "imdb",
+      "plugin_type": "metadatahandler",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 33
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{}",
+      "name": "firstseen",
+      "plugin_name": "firstseen",
+      "plugin_type": "metadatahandler",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 34
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"display_name\":\"Sections\",\"sections\":[],\"player_service\":21}",
+      "name": "sections",
+      "plugin_name": "sections",
+      "plugin_type": "service",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 35
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"mount_at_root\":true, \"config\":41}",
+      "name": "if",
+      "plugin_name": "webinterface",
+      "plugin_type": "service",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 36
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{}",
+      "name": "tag",
+      "plugin_name": "tag",
+      "plugin_type": "metadatahandler",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 37
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"tag_metadata\":37}",
+      "name": "tag",
+      "plugin_name": "tag",
+      "plugin_type": "tag",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 38
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"metadata_server\":22,\"image_cache\":23}",
+      "name": "embedded",
+      "plugin_name": "embedded",
+      "plugin_type": "metadatahandler",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 39
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"display_name\":\"Store\",\"sections\":[],\"player_service\":21}",
+      "name": "store",
+      "plugin_name": "store",
+      "plugin_type": "service",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 40
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{}",
+      "name": "config",
+      "plugin_name": "config",
+      "plugin_type": "config",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 41
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"config\":41}",
+      "name": "config",
+      "plugin_name": "config",
+      "plugin_type": "service",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 42
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{}",
+      "name": "name",
+      "plugin_name": "name",
+      "plugin_type": "metadatahandler",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 43
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{}",
+      "name": "available",
+      "plugin_name": "available",
+      "plugin_type": "metadatahandler",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 44
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"config\":41}",
+      "name": "wamp",
+      "plugin_name": "wamp",
+      "plugin_type": "notifier",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 45
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"notifiers\":[45]}",
+      "name": "multinotifier",
+      "plugin_name": "multinotifier",
+      "plugin_type": "notifier",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 46
+  }
+]

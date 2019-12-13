@@ -1,0 +1,2 @@
+include tridentstream/fixtures/tridentstream-initial.json
+recursive-include tridentstream/services/webinterface/static *

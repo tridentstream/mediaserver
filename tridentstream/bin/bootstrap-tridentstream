@@ -1,0 +1,96 @@
+#!/usr/bin/env python
+
+import json
+import os
+
+# from xmlrpc.client import ServerProxy
+
+from django.core.management.utils import get_random_secret_key
+
+PLUGINS_REQUIREMENTS_FILE = 'tridentstream-plugins-requirements.txt'
+BOOTSTRAP_STATUS_FILE = 'tridentstream-bootstrap-progress.json'
+
+write_files = {}
+
+write_files['manage.py'] = """#!/usr/bin/env python
+import os
+import sys
+
+if __name__ == "__main__":
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "main.settings")
+
+    from django.core.management import execute_from_command_line
+
+    execute_from_command_line(sys.argv)
+"""
+
+PUSH_PLUGIN_ID = 100
+
+if __name__ == '__main__':
+    print('Bootstrapping Tridentstream Media Server')
+
+    print('Writing configuration files')
+    for fn, data in write_files.items():
+        if not os.path.exists(fn):
+            print('Writing file %s' % (fn, ))
+            with open(fn, 'w') as f:
+                f.write(data)
+        else:
+            print('Skipping file %s because it already exists' % (fn, ))
+
+    # if os.path.exists(PLUGINS_REQUIREMENTS_FILE):
+    #     client = ServerProxy('https://pypi.org/pypi')
+
+    # check addon requirements file for all packages and if they are installed
+    # for each that isn't installed, check if they are added as additional_apps
+
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "main.settings")
+    import django
+    django.setup()
+
+    from django.core import management
+    from django.conf import settings
+
+    if not os.path.isdir(settings.DATABASE_ROOT):
+        os.makedirs(settings.DATABASE_ROOT)
+
+    if not os.path.isdir(settings.MEDIA_ROOT):
+        os.makedirs(settings.MEDIA_ROOT)
+
+    from tridentstream import __version__
+
+    if os.path.isfile(BOOTSTRAP_STATUS_FILE):
+        with open(BOOTSTRAP_STATUS_FILE, 'r') as f:
+            bootstrap_progress = json.load(f)
+    else:
+        bootstrap_progress = {}
+
+    if bootstrap_progress.get('migrate') != __version__:
+        print('Populating database')
+        management.call_command('migrate', 'unplugged')
+        management.call_command('migrate')
+        bootstrap_progress['migrate'] = __version__
+
+    print('Creating cache table')
+    management.call_command('createcachetable')
+
+    from unplugged.models import Plugin
+    if len(Plugin.objects.all()) == 0:
+        print('No plugins found, pushing increment ID above %i' % (PUSH_PLUGIN_ID, ))
+        while True:
+            p = Plugin.objects.create(name='incrementing', plugin_name='incrementing', plugin_type='incrementing')
+            pk = p.pk
+            p.delete()
+            if pk >= PUSH_PLUGIN_ID:
+                break
+
+    if not bootstrap_progress.get('loaddata'):
+        print('Loading initial data')
+        management.call_command('loaddata', '--app', 'unplugged', 'unplugged-initial.json')
+        management.call_command('loaddata', '--app', 'tridentstream', 'tridentstream-initial.json')
+        bootstrap_progress['loaddata'] = __version__
+
+    with open(BOOTSTRAP_STATUS_FILE, 'w') as f:
+        json.dump(bootstrap_progress, f)
+
+    print('Done!')

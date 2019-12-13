@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:12
+    restart: unless-stopped
+    networks:
+      - tridentstream
+    environment:
+      - POSTGRES_PASSWORD=9RHmVRRNhGAphvFEc
+      - POSTGRES_USER=tridentstream
+  cache:
+    image: memcached:1.5
+    restart: unless-stopped
+    networks:
+      - tridentstream
+    command: memcached -I 64M -m 256M
+  tridentstream:
+    image: tridentstream/mediaserver:latest
+    restart: unless-stopped
+    command: ["/wait-for-it.sh", "db:5432", "--", "/bootstrap-and-execute.sh", "-s"]
+    environment:
+      - DATABASE_URL=postgres://tridentstream:9RHmVRRNhGAphvFEc@db/tridentstream
+      - CACHE_URL=memcache://cache:11211
+    depends_on:
+      - db
+    networks:
+      - tridentstream
+    volumes:
+      - ./tridentstream/:/tridentstream
+
+networks:
+  tridentstream:
