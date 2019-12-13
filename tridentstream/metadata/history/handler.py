@@ -1,12 +1,10 @@
 import logging
-
 from collections import defaultdict
 
 from rest_framework import serializers
 
 from ...bases.metadata.linkingmetadata import LinkingMetadataHandlerPlugin
-
-from .models import History, ViewState, HistoryMetadata, ListingItemRelation
+from .models import History, HistoryMetadata, ListingItemRelation, ViewState
 
 logger = logging.getLogger(__name__)
 

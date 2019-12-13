@@ -1,7 +1,6 @@
 from unplugged import Schema
 
 from ...plugins import ConfigPlugin
-
 from .models import DefaultSetting, Setting
 
 

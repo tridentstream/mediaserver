@@ -1,8 +1,8 @@
 from abc import abstractmethod, abstractproperty
 
-from ..vfs import DatabaseType
-
 from unplugged import PluginBase
+
+from ..vfs import DatabaseType
 
 
 class MetadataParserPlugin(PluginBase):  # add context manager

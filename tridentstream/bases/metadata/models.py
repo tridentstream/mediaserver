@@ -3,9 +3,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.urls import reverse
-
 from jsonfield import JSONField
-
 from unplugged.models import Plugin
 
 from ..listing.models import ListingItem
@@ -17,8 +15,8 @@ class BaseUpdatable(models.Model):
     priority = models.SmallIntegerField(default=20)
 
     UPDATE_STATUS_DO_NOT_FETCH = (
-        "do-not-fetch"
-    )  # be able to link, but not actually needed right now
+        "do-not-fetch"  # be able to link, but not actually needed right now
+    )
     UPDATE_STATUS_PENDING = "pending"
     UPDATE_STATUS_UPDATING = "updating"
     UPDATE_STATUS_FAILED = "failed"

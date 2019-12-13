@@ -1,16 +1,14 @@
 import logging
-
-import requests
-
 from urllib.parse import urljoin
 
-from twisted.internet import threads
-from thomas import Item, router, StreamerBase
+import requests
+from thomas import Item, StreamerBase, router
 from unplugged import Schema, fields
 
-from ...plugins import InputPlugin
+from twisted.internet import threads
 
-from ...exceptions import PathNotFoundException, NotModifiedException
+from ...exceptions import NotModifiedException, PathNotFoundException
+from ...plugins import InputPlugin
 from ...stream import Stream
 
 logger = logging.getLogger(__name__)

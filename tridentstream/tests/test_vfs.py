@@ -1,11 +1,10 @@
 import time
-
 import unittest
 
 from freezegun import freeze_time
 
-from ..vfs import FileSystem, DatabaseType, GC_DELETED_FILES
 from ..testutils import debugdict
+from ..vfs import GC_DELETED_FILES, DatabaseType, FileSystem
 
 
 class VirtualFileSystemTestCase(unittest.TestCase):

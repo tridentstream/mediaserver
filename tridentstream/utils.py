@@ -1,13 +1,12 @@
 import hashlib
 import os
 import posixpath
-
 from urllib.parse import urljoin as _urljoin
 
-from django.http import HttpResponse, Http404, HttpResponseNotModified
+from django.http import Http404, HttpResponse, HttpResponseNotModified
 from django.utils._os import safe_join
-from django.views.static import directory_index, was_modified_since
 from django.utils.six.moves.urllib.parse import unquote
+from django.views.static import directory_index, was_modified_since
 
 
 def urljoin(*args):

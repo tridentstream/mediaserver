@@ -1,7 +1,7 @@
 from django.conf import settings
+from unplugged import RelatedPluginField, Schema, ServicePlugin, fields
 
-from unplugged import RelatedPluginField, ServicePlugin, Schema, fields
-from ...plugins import MetadataHandlerPlugin, IndexerPlugin, HistoryPlugin, TagPlugin
+from ...plugins import HistoryPlugin, IndexerPlugin, MetadataHandlerPlugin, TagPlugin
 
 
 class ListingLevelSchema(Schema):
@@ -34,5 +34,7 @@ class ListingSchema(Schema):
 
 
 class BaseSchema(Schema):
-    display_name = fields.String(default="", description="Display Name", ui_schema={"ui:title": "Name"})
+    display_name = fields.String(
+        default="", description="Display Name", ui_schema={"ui:title": "Name"}
+    )
     player_service = RelatedPluginField(plugin_type=ServicePlugin, traits=["player"])

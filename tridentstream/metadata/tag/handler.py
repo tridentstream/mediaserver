@@ -3,9 +3,8 @@ import logging
 from rest_framework import serializers
 
 from ...bases.metadata.linkingmetadata import LinkingMetadataHandlerPlugin
-
 from .filters import MetadataFilter
-from .models import Tag, ListingItemRelation
+from .models import ListingItemRelation, Tag
 
 logger = logging.getLogger(__name__)
 

@@ -1,11 +1,9 @@
 import logging
-
 from datetime import timedelta
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count
 from django.utils.timezone import now
-
 from unplugged import RelatedPluginField, Schema
 
 from ...plugins import HistoryPlugin, MetadataHandlerPlugin

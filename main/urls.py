@@ -1,9 +1,8 @@
 import os
 
 import django.contrib.admin
-
-from django.conf.urls import include, static, url
 from django.conf import settings
+from django.conf.urls import include, static, url
 from django.contrib import admin
 from django.urls import path, re_path
 

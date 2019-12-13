@@ -3,7 +3,6 @@ from __future__ import absolute_import
 import logging
 
 from guessit import guessit
-
 from unplugged import Schema
 
 from .plugin import ItemInfoPlugin

@@ -6,7 +6,6 @@ import unittest
 from django.test import TestCase
 
 from ...plugins import DatabaseCacheLayer
-
 from .handler import ShelfDatabasePlugin
 
 

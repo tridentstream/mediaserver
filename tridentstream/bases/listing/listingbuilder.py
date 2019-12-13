@@ -1,18 +1,14 @@
 import logging
-
-import pytz
-
 from datetime import datetime, timedelta
 
+import pytz
 from django.conf import settings
 from django.db import transaction
 from django.utils.timezone import now
-
 from thomas import Item, router
 
 from ...exceptions import NotModifiedException, PathNotFoundException
 from ...locktracker import LockTracker
-
 from .models import ListingItem
 
 logger = logging.getLogger(__name__)

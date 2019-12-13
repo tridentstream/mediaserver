@@ -1,9 +1,8 @@
 import os
-
 from abc import abstractmethod
 from collections import MutableMapping
-from django.conf import settings
 
+from django.conf import settings
 from unplugged import PluginBase
 
 

@@ -1,21 +1,23 @@
 from __future__ import absolute_import
 
-"""
-Tridentstream Django settings.
-"""
-
 import os
 
 import environ
 
+"""
+Tridentstream Django settings.
+"""
+
+
+
 env = environ.Env(
-    ALLOWED_HOSTS=(list, ['*']),
-    MEDIA_ROOT=(str, 'media'),
-    DATABASE_ROOT=(str, 'dbs'),
+    ALLOWED_HOSTS=(list, ["*"]),
+    MEDIA_ROOT=(str, "media"),
+    DATABASE_ROOT=(str, "dbs"),
     INSTALLED_APPS=(list, []),
     DISABLE_CSRF_SECURITY=(bool, True),
 )
-env.read_env(env.str('ENV_PATH', '.environ'))
+env.read_env(env.str("ENV_PATH", ".environ"))
 
 if os.environ.get("DJANGO_DEBUG") == "1":
     LOGGING = {
@@ -27,10 +29,10 @@ if os.environ.get("DJANGO_DEBUG") == "1":
         },
         "loggers": {
             "django": {"handlers": ["console"], "level": "DEBUG"},
-            'django.db.backends': {
-                'handlers': ['null'],  # Quiet by default!
-                'propagate': False,
-                'level':'DEBUG',
+            "django.db.backends": {
+                "handlers": ["null"],  # Quiet by default!
+                "propagate": False,
+                "level": "DEBUG",
             },
             "rebulk.rules": {
                 "handlers": ["null"],  # Quiet by default!
@@ -91,7 +93,10 @@ BITTORRENT_CLIENT_APPS = ("tridentstream.bittorrentclients.deluge",)
 
 SEARCHER_APPS = ("tridentstream.searchers.remotesearcher",)
 
-NOTIFIER_APPS = ("tridentstream.notifiers.wamp", "tridentstream.notifiers.multinotifier")
+NOTIFIER_APPS = (
+    "tridentstream.notifiers.wamp",
+    "tridentstream.notifiers.multinotifier",
+)
 
 # Application definition
 
@@ -250,28 +255,28 @@ THOMAS_STREAMER_PLUGINS = ["direct", "rar"]
 VIDEO_STREAMABLE_EXTENSIONS = ["mkv", "mp4", "iso", "ogg", "ogm", "m4v", "wmv"]
 AUDIO_STREAMABLE_EXTENSIONS = ["flac", "mp3", "oga", "m4a"]
 STREAMABLE_EXTENSIONS = set(VIDEO_STREAMABLE_EXTENSIONS + AUDIO_STREAMABLE_EXTENSIONS)
-WAMP_REALM = 'tridentstream'
+WAMP_REALM = "tridentstream"
 
 CACHES = {
-    'default': env.cache(default='dbcache://cache_table'),
+    "default": env.cache(default="dbcache://cache_table"),
 }
 
 DATABASES = {
-    'default': env.db(default='sqlite:///db.sqlite3?timeout=120'),
+    "default": env.db(default="sqlite:///db.sqlite3?timeout=120"),
 }
 
-INSTALLED_APPS += tuple(env('INSTALLED_APPS'))
+INSTALLED_APPS += tuple(env("INSTALLED_APPS"))
 
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env("SECRET_KEY")
 
-ALLOWED_HOSTS = env('ALLOWED_HOSTS')
+ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
-MEDIA_ROOT = env('MEDIA_ROOT')
-DATABASE_ROOT = env('MEDIA_ROOT')
+MEDIA_ROOT = env("MEDIA_ROOT")
+DATABASE_ROOT = env("MEDIA_ROOT")
 
-if env('DISABLE_CSRF_SECURITY'):
+if env("DISABLE_CSRF_SECURITY"):
     MIDDLEWARE += ("main.disablecsrf.DisableCSRFMiddleware",)
 
-for option, option_value in DATABASES['default'].get('OPTIONS', {}).items():
-    if option == 'timeout':
-        DATABASES['default']['OPTIONS'][option] = int(option_value)
+for option, option_value in DATABASES["default"].get("OPTIONS", {}).items():
+    if option == "timeout":
+        DATABASES["default"]["OPTIONS"][option] = int(option_value)

@@ -2,14 +2,12 @@ import json
 import logging
 
 from django.http import Http404
-
 from rest_framework import status
 from rest_framework.response import Response
+from unplugged import CascadingPermission, JSONAPIObject, JSONAPIRoot
 
 from ...bases.listing.views import BaseListingView
-from unplugged import JSONAPIRoot, JSONAPIObject, CascadingPermission
 from ...utils import hash_string
-
 from .models import SearchQueryCache
 
 logger = logging.getLogger(__name__)
@@ -55,8 +53,8 @@ class StoreListView(BaseListingView):
         if "/" in path:
             return path
 
-        query = dict(request.GET) # TODO: use search filter to filter?
-        skip_query_keys = ['limit', 'page']
+        query = dict(request.GET)  # TODO: use search filter to filter?
+        skip_query_keys = ["limit", "page"]
         for skip_query_key in skip_query_keys:
             if skip_query_key in query:
                 del query[skip_query_key]

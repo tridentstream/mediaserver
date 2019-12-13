@@ -1,7 +1,6 @@
 import logging
 
 import requests
-
 from unplugged import Schema, fields
 from unplugged.models import Log
 

@@ -1,14 +1,12 @@
 import logging
 
 from django.conf.urls import url
-
+from unplugged import DefaultPermission, RelatedPluginField, Schema, command, fields
 
 from ...bases.listing.handler import BaseListingService
 from ...bases.listing.models import ListingItem
-from ...bases.listing.schema import ListingSchema, BaseSchema
-from unplugged import command, RelatedPluginField, DefaultPermission, Schema, fields
+from ...bases.listing.schema import BaseSchema, ListingSchema
 from ...plugins import InputPlugin, InputPluginManager
-
 from .views import SectionsListView
 
 logger = logging.getLogger(__name__)

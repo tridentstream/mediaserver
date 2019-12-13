@@ -1,16 +1,14 @@
 import logging
 import re
-
 from datetime import date
 
 from django.db import models
 
 from ...bases.metadata.models import (
-    BaseMetadata,
     BaseListingItemRelation,
+    BaseMetadata,
     BaseMetadataResolutionLink,
 )
-
 
 logger = logging.getLogger(__name__)
 

@@ -1,19 +1,14 @@
 import logging
+from contextlib import contextmanager
 
 import requests
 import requests.utils
-
-from contextlib import contextmanager
-
 from django.db import models
-
 from jsonfield import JSONField
-
 from picklefield.fields import PickledObjectField
 
 from ...locktracker import LockTracker
 from ...utils import hash_string
-
 from .bencode import bdecode, bencode
 
 logger = logging.getLogger(__name__)

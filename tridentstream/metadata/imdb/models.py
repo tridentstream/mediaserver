@@ -3,8 +3,8 @@ import logging
 from django.db import models
 
 from ...bases.metadata.models import (
-    BaseMetadata,
     BaseListingItemRelation,
+    BaseMetadata,
     BaseMetadataResolutionLink,
 )
 

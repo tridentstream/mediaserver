@@ -1,18 +1,15 @@
 import logging
-
 from collections import defaultdict
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
-
 from unplugged import Schema
 
 from ...plugins import MetadataHandlerPlugin
-
 from .mixins import (
+    GetMetadataStatsMixin,
     ListingItemRelinkingMixin,
     PopulateMetadataJSONAPIMixin,
-    GetMetadataStatsMixin,
     ResetFailedMixin,
 )
 

@@ -1,21 +1,17 @@
 import logging
-
 from threading import Lock
 
 from imdbparser import IMDb  # NOQA
-
+from rest_framework import serializers
 from unplugged import fields
 
-from rest_framework import serializers
-
 from ...bases.metadata.remotemetadata import (
-    RemoteMetadataHandlerPlugin,
     MetadataSerializer,
+    RemoteMetadataHandlerPlugin,
 )
 from ...bases.metadata.schema import MetadataSchema
-
 from .filters import MetadataFilter
-from .models import Metadata, ListingItemRelation, MetadataResolutionLink
+from .models import ListingItemRelation, Metadata, MetadataResolutionLink
 
 logger = logging.getLogger(__name__)
 

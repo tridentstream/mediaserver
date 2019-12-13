@@ -2,11 +2,9 @@ import logging
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
-
 from rest_framework import serializers
 
 from ...bases.metadata.linkingmetadata import LinkingMetadataHandlerPlugin
-
 from .filters import MetadataFilter
 from .models import FirstSeen, ListingItemRelation
 

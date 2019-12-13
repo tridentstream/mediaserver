@@ -2,28 +2,25 @@ import glob
 import logging
 import os
 import time
-
-import pytz
-
 from datetime import datetime
 from queue import Queue
 from urllib.parse import urljoin
 
+import pytz
 from django.conf import settings
-
-from twisted.internet import threads, defer, reactor
-
 from thomas import router
-
-from unplugged import command, RelatedPluginField, Schema, fields
+from unplugged import RelatedPluginField, Schema, command, fields
 from unplugged.models import Log
+
+from twisted.internet import defer, reactor, threads
+
 from ...exceptions import NotModifiedException, PathNotFoundException
 from ...plugins import (
-    InputPlugin,
     DatabasePlugin,
+    InputPlugin,
     MetadataParserPlugin,
-    NotifierPlugin,
     Notification,
+    NotifierPlugin,
 )
 from ...vfs import FileSystem
 
@@ -265,7 +262,9 @@ class FilesystemInputPlugin(InputPlugin):
             reactor.callInThread(self.notifier.notify, notification)
 
         with Log.objects.start_chain(self, "INPUT.RESCAN") as log:
-            log.log(0, f"A rescan is started and update_all_metadata {update_all_metadata}")
+            log.log(
+                0, f"A rescan is started and update_all_metadata {update_all_metadata}"
+            )
 
             self.is_rescanning = True
             self.rescan_done = defer.Deferred()
@@ -326,11 +325,15 @@ class FilesystemInputPlugin(InputPlugin):
                                 virtual_path = [prefix] + root.split(os.sep)
 
                                 for item in folders:
-                                    vp = "/".join([x for x in virtual_path + [item] if x])
+                                    vp = "/".join(
+                                        [x for x in virtual_path + [item] if x]
+                                    )
                                     vfs.add_dir(vp, int(time.time()))
 
                                 for item, size in files:
-                                    vp = "/".join([x for x in virtual_path + [item] if x])
+                                    vp = "/".join(
+                                        [x for x in virtual_path + [item] if x]
+                                    )
                                     actual_path = os.path.join(path, root, item)
 
                                     vfs.add_file(

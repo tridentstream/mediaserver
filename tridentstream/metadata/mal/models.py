@@ -2,7 +2,7 @@ import logging
 
 from django.db import models
 
-from ...bases.metadata.models import BaseMetadata, BaseListingItemRelation
+from ...bases.metadata.models import BaseListingItemRelation, BaseMetadata
 
 logger = logging.getLogger(__name__)
 

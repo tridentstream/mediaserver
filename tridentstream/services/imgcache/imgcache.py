@@ -1,15 +1,13 @@
 import io
 import logging
-
-import requests
-
 from urllib.parse import quote_plus
 
+import requests
 from django.core.cache import cache
 from django.core.files.storage import default_storage
 from django.core.signing import Signer
+from unplugged import RelatedPluginField, Schema, ServicePlugin
 
-from unplugged import RelatedPluginField, ServicePlugin, Schema
 from ...plugins import ImageCachePlugin
 from ...utils import hash_string
 

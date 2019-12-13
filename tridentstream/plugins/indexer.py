@@ -1,9 +1,7 @@
 import os
-
 from abc import abstractmethod
 
 from django.conf import settings
-
 from unplugged import PluginBase
 
 

@@ -1,8 +1,13 @@
 from django.conf.urls import url
+from unplugged import (
+    DefaultPermission,
+    RelatedPluginField,
+    Schema,
+    ServicePlugin,
+    fields,
+)
 
-from unplugged import ServicePlugin, RelatedPluginField, DefaultPermission, Schema, fields
 from ...plugins import InputPlugin
-
 from .views import RemoteFilesystemView
 
 

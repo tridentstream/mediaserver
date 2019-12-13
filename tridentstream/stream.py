@@ -1,7 +1,6 @@
 import os
 
 from django.conf import settings
-
 from unplugged import JSONAPIObject
 
 

@@ -9,4 +9,5 @@ class AppConfig(DjangoAppConfig):
 
     def ready(self):
         from .eventtrack import register_signals
+
         register_signals()

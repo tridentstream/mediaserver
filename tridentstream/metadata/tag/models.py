@@ -5,7 +5,6 @@ from django.db import models
 
 from ...bases.metadata.models import BaseListingItemRelation, BaseMetadataLink
 
-
 logger = logging.getLogger(__name__)
 
 

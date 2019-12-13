@@ -1,12 +1,10 @@
 import logging
 
+from rest_framework import serializers
 from unplugged import Schema
 
-from rest_framework import serializers
-
 from ...bases.metadata.remotemetadata import RemoteMetadataHandlerPlugin
-
-from .models import Metadata, ListingItemRelation
+from .models import ListingItemRelation, Metadata
 
 logger = logging.getLogger(__name__)
 

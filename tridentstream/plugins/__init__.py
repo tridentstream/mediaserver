@@ -1,17 +1,17 @@
 from .bittorrentclient import BittorrentClientPlugin  # NOQA
 from .config import ConfigPlugin  # NOQA
-from .db import DatabasePlugin, DatabaseCacheLayer  # NOQA
+from .db import DatabaseCacheLayer, DatabasePlugin  # NOQA
 from .history import HistoryPlugin  # NOQA
 from .imagecache import ImageCachePlugin  # NOQA
 from .indexer import IndexerPlugin, PathIndexer  # NOQA
 from .input import InputPlugin, InputPluginManager  # NOQA
 from .metadatahandler import MetadataHandlerPlugin  # NOQA
 from .metadataparser import MetadataParserPlugin  # NOQA
-from .notifier import NotifierPlugin, Notification  # NOQA
-from .searcher import (
-    SearcherPlugin,
+from .notifier import Notification, NotifierPlugin  # NOQA
+from .searcher import (  # NOQA
     SearcherFilter,
-    SearchQuery,
+    SearcherPlugin,
     SearcherPluginManager,
-)  # NOQA
+    SearchQuery,
+)
 from .tag import TagPlugin  # NOQA

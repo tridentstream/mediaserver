@@ -1,10 +1,8 @@
-from django.db import models
-
-from jsonfield import JSONField
-
-from thomas import Item, router
-
 from urllib.parse import quote
+
+from django.db import models
+from jsonfield import JSONField
+from thomas import Item, router
 
 
 class ListingItem(models.Model):

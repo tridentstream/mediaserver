@@ -1,11 +1,9 @@
 import mimetypes
 import os
 
-from PIL import Image as PImage
-
-from django.core.signing import Signer, BadSignature
+from django.core.signing import BadSignature, Signer
 from django.http import Http404, HttpResponse
-
+from PIL import Image as PImage
 from rest_framework import permissions
 from rest_framework.views import APIView
 

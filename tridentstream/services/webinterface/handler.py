@@ -2,11 +2,10 @@ import os
 
 from django.conf import settings
 from django.conf.urls import url
+from unplugged import RelatedPluginField, Schema, ServicePlugin, fields
 
-from unplugged import ServicePlugin, RelatedPluginField,  Schema, fields
 from ...plugins import ConfigPlugin
 from ...utils import serve
-
 from .views import IndexView
 
 

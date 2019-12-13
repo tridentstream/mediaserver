@@ -1,18 +1,15 @@
 import hashlib
 import logging
-
 from contextlib import contextmanager
 from datetime import timedelta
 
 from django.utils.timezone import now
-
 from thomas import Item
 
 from ...exceptions import PathNotFoundException
 from ...plugins import SearcherFilter
 from ...utils import urljoin
-
-from .models import WebSession, TorrentFile, ListingCache, AvailableMedia
+from .models import AvailableMedia, ListingCache, TorrentFile, WebSession
 
 logger = logging.getLogger(__name__)
 
@@ -101,8 +98,8 @@ class LoginMixin:
     login_path = None
     login_test_path = None
     login_fields = (
-        None
-    )  # list of fields to take from config, if tuple, use mapped field.
+        None  # list of fields to take from config, if tuple, use mapped field.
+    )
 
     last_failure = None
     login_checked = False

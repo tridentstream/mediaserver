@@ -1,6 +1,5 @@
 import logging
 import time
-
 from collections import defaultdict
 from threading import Event, Lock
 
@@ -9,19 +8,17 @@ from django.core.exceptions import FieldDoesNotExist
 from django.db import transaction
 from django.db.models import Q
 from django.utils.timezone import now
-
 from rest_framework import serializers
 
 from twisted.internet import reactor, threads
 
 from ...plugins import MetadataHandlerPlugin
-
 from .mixins import (
-    PopulateMetadataJSONAPIMixin,
-    ListingItemRelinkingMixin,
-    GetMetadataStatsMixin,
-    ResetFailedMixin,
     CoverSerializerMixin,
+    GetMetadataStatsMixin,
+    ListingItemRelinkingMixin,
+    PopulateMetadataJSONAPIMixin,
+    ResetFailedMixin,
 )
 from .schema import MetadataSchema
 

@@ -3,10 +3,9 @@ import uuid
 
 from rest_framework import serializers
 
-from ...bases.metadata.mixins import PopulateMetadataJSONAPIMixin, CoverSerializerMixin
+from ...bases.metadata.mixins import CoverSerializerMixin, PopulateMetadataJSONAPIMixin
 from ...bases.metadata.schema import MetadataSchema
 from ...plugins import MetadataHandlerPlugin
-
 from .filters import EmbeddedInfoFilter
 from .models import EmbeddedInfo, ListingItemRelation
 

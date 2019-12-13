@@ -1,8 +1,8 @@
 import logging
 
 from django.contrib.contenttypes.models import ContentType
-
 from unplugged import RelatedPluginField, Schema
+
 from ...plugins import MetadataHandlerPlugin, TagPlugin
 
 logger = logging.getLogger(__name__)

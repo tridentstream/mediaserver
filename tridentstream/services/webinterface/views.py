@@ -3,7 +3,6 @@ import os
 
 from django.http import HttpResponse
 from django.views import View
-
 from rest_framework import permissions
 
 logger = logging.getLogger(__name__)

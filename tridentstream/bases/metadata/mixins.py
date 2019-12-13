@@ -1,13 +1,11 @@
 import logging
-
 from collections import defaultdict
 
 from django.core.exceptions import FieldDoesNotExist
-from django.db.models import Q, Count, Field
-
-from .models import BaseUpdatable, BaseMetadataResolutionLink
-
+from django.db.models import Count, Field, Q
 from unplugged import JSONAPIObject, command
+
+from .models import BaseMetadataResolutionLink, BaseUpdatable
 
 logger = logging.getLogger(__name__)
 

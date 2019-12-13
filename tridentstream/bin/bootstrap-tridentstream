@@ -3,9 +3,10 @@
 import json
 import os
 
+from django.core.management.utils import get_random_secret_key
+
 # from xmlrpc.client import ServerProxy
 
-from django.core.management.utils import get_random_secret_key
 
 PLUGINS_REQUIREMENTS_FILE = 'tridentstream-plugins-requirements.txt'
 BOOTSTRAP_STATUS_FILE = 'tridentstream-bootstrap-progress.json'

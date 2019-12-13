@@ -1,8 +1,7 @@
 from django.conf.urls import url
+from unplugged import RelatedPluginField, Schema, ServicePlugin
 
-from unplugged import ServicePlugin, RelatedPluginField, Schema
 from ...plugins import ConfigPlugin
-
 from .views import ConfigView
 
 

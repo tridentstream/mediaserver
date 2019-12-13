@@ -1,12 +1,10 @@
 import logging
 
 from django.contrib.auth.models import User
-
+from unplugged import RelatedPluginField, Schema, fields
 from wampyre.realm import realm_manager
 
-from unplugged import RelatedPluginField, Schema, fields
-
-from ...plugins import NotifierPlugin, ConfigPlugin
+from ...plugins import ConfigPlugin, NotifierPlugin
 
 logger = logging.getLogger(__name__)
 

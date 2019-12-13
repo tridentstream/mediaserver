@@ -1,16 +1,13 @@
 import logging
 
 import requests
-
 from django.core.cache import cache
-
-from unplugged import Schema, fields
-
 from thomas import Item
+from unplugged import Schema, fields
 
 from ...bases.websearcher.torrentsearcher import URLSearcherPluginBase
 from ...exceptions import PathNotFoundException
-from ...plugins import SearcherPlugin, SearcherFilter
+from ...plugins import SearcherFilter, SearcherPlugin
 from ...stream import Stream
 from ...utils import urljoin
 

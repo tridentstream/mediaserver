@@ -2,11 +2,10 @@ import logging
 import threading
 
 from django.conf import settings
+from unplugged import ServicePlugin, command
+from unplugged.models import Schedule
 
 from twisted.internet import reactor, threads
-
-from unplugged import command, ServicePlugin
-from unplugged.models import Schedule
 
 from .listingbuilder import ListingBuilder
 from .models import ListingItem
@@ -25,7 +24,12 @@ class BaseListingService(ServicePlugin):
         self.automatic_rebuild_lock = threading.Lock()
 
         if self.can_automatically_rebuild:
-            reactor.callFromThread(reactor.callLater, 1, threads.deferToThread, self.schedule_automatic_rebuild)
+            reactor.callFromThread(
+                reactor.callLater,
+                1,
+                threads.deferToThread,
+                self.schedule_automatic_rebuild,
+            )
             reactor.callFromThread(reactor.callLater, 30, self.rebuild_request)
 
     def get_section(self, section_name):
@@ -49,7 +53,7 @@ class BaseListingService(ServicePlugin):
             "rebuild_listings",
             {},
             self,
-            'automatic_rebuild_listing'
+            "automatic_rebuild_listing",
         )
 
     @command(
@@ -128,9 +132,7 @@ class BaseListingService(ServicePlugin):
         depth = len(path)
         path = "/".join(path)
 
-        logger.debug(
-            f"Looking for path:{path} in section:{section} with depth:{depth}"
-        )
+        logger.debug(f"Looking for path:{path} in section:{section} with depth:{depth}")
 
         config = self.get_section(section)
         if not config:

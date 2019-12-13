@@ -1,6 +1,5 @@
 from django.conf.urls import url
-
-from unplugged import ServicePlugin, Schema
+from unplugged import Schema, ServicePlugin
 
 from .views import MetadataView
 

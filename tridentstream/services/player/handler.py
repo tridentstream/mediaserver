@@ -2,8 +2,8 @@ import functools
 import logging
 
 from django.urls import path
+from unplugged import Schema, ServicePlugin
 
-from unplugged import ServicePlugin, Schema
 from .ws import PlayerConsumer
 
 logger = logging.getLogger(__name__)

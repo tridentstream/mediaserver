@@ -2,15 +2,14 @@ import logging
 import re
 
 from django.utils.text import slugify
-
-from ...bases.metadata.remotemetadata import (
-    RemoteMetadataHandlerPlugin,
-    BaseMetadataSerializer,
-)
 from unplugged import RelatedPluginField, Schema, fields
 
+from ...bases.metadata.remotemetadata import (
+    BaseMetadataSerializer,
+    RemoteMetadataHandlerPlugin,
+)
 from .filters import MetadataFilter
-from .models import Metadata, ListingItemRelation
+from .models import ListingItemRelation, Metadata
 from .plugins import ItemInfoPlugin
 
 logger = logging.getLogger(__name__)

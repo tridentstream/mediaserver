@@ -4,15 +4,11 @@ import logging
 from channels.exceptions import AcceptConnection, DenyConnection
 from channels.generic.websocket import WebsocketConsumer
 from channels.http import AsgiRequest
-
 from django.contrib.auth import login
-
 from jsonrpc import JSONRPCResponseManager
 from jsonrpc.dispatcher import Dispatcher
-
 from rest_framework import exceptions, permissions
 from rest_framework.settings import api_settings
-
 from unplugged import CascadingPermission
 
 logger = logging.getLogger(__name__)

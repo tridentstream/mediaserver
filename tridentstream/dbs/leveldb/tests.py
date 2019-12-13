@@ -1,5 +1,4 @@
 from ..shelve.tests import ShelfDatabaseTest
-
 from .handler import LevelDBDatabasePlugin
 
 

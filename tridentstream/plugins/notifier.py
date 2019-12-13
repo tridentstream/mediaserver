@@ -1,6 +1,5 @@
 import fnmatch
 import logging
-
 from abc import abstractmethod
 
 from unplugged import PluginBase, Schema, fields

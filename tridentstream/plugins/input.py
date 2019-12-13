@@ -1,21 +1,17 @@
 import hashlib
 import json
 import logging
-
 from abc import abstractmethod
-
 from datetime import timedelta
 
 from django.conf import settings
 from django.core.cache import cache
-
 from thomas import router
+from unplugged import PluginBase, pluginhandler
 
 from ..exceptions import NotModifiedException, PathNotFoundException
 from ..stream import Stream
 from ..utils import hash_string
-
-from unplugged import PluginBase, pluginhandler
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +39,7 @@ def _listing_cache_key(prefix, plugin, path, depth):
 class InputPluginManager:
     @staticmethod
     def get_item_multiple(
-        plugin_path_pairs
+        plugin_path_pairs,
     ):  # get an item for all paths and merge into one
         item = None
         for plugin, path in plugin_path_pairs:

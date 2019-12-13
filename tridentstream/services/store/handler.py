@@ -1,17 +1,14 @@
 import logging
-
 from datetime import timedelta
 
 from django.conf.urls import url
 from django.utils.timezone import now
-
 from unplugged import DefaultPermission, RelatedPluginField, Schema, fields
 
 from ...bases.listing.handler import BaseListingService
-from ...bases.listing.schema import ListingSchema, BaseSchema
+from ...bases.listing.schema import BaseSchema, ListingSchema
 from ...exceptions import NotModifiedException
 from ...plugins import SearcherPlugin, SearcherPluginManager
-
 from .models import SearchQueryCache
 from .views import StoreListView
 

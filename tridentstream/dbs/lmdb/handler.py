@@ -1,8 +1,8 @@
 import pickle
 
-import lmdb
-
 from unplugged import Schema, fields
+
+import lmdb
 
 from ...plugins import DatabasePlugin
 
@@ -19,7 +19,7 @@ class LMDBDatabasePlugin(DatabasePlugin):
     def __init__(self, config):
         self.db = lmdb.open(
             self.get_database_path(config["path"]),
-            map_size=500 * 1024 * 1024, # TODO: autoscale
+            map_size=500 * 1024 * 1024,  # TODO: autoscale
             map_async=True,
             writemap=True,
             metasync=False,

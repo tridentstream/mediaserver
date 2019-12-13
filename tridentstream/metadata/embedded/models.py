@@ -1,7 +1,6 @@
 import logging
 
 from django.db import models
-
 from jsonfield import JSONField
 
 from ...bases.metadata.models import BaseListingItemRelation
@@ -9,9 +8,7 @@ from ...bases.metadata.models import BaseListingItemRelation
 logger = logging.getLogger(__name__)
 
 
-class EmbeddedInfo(
-    models.Model
-):
+class EmbeddedInfo(models.Model):
     path = models.CharField(max_length=500)
     query_key = models.CharField(max_length=50)
 

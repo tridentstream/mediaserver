@@ -1,16 +1,14 @@
 import logging
 
+from malparser import MAL  # NOQA
 from rest_framework import serializers
 
-from malparser import MAL  # NOQA
-
 from ...bases.metadata.remotemetadata import (
-    RemoteMetadataHandlerPlugin,
     MetadataSerializer,
+    RemoteMetadataHandlerPlugin,
 )
-
 from .filters import MetadataFilter
-from .models import Metadata, ListingItemRelation
+from .models import ListingItemRelation, Metadata
 
 logger = logging.getLogger(__name__)
 

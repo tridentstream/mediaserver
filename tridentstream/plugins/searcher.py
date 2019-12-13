@@ -1,14 +1,13 @@
 import json
 import logging
 import time
-
 from abc import abstractmethod, abstractproperty
 
-from twisted.internet import reactor, threads, defer
+from unplugged import PluginBase
+
+from twisted.internet import defer, reactor, threads
 
 from ..utils import hash_string
-
-from unplugged import PluginBase
 
 logger = logging.getLogger(__name__)
 

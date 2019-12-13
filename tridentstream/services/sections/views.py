@@ -1,12 +1,11 @@
 import logging
 
 from django.http import Http404
-
 from rest_framework import status
 from rest_framework.response import Response
+from unplugged import CascadingPermission, JSONAPIObject, JSONAPIRoot
 
 from ...bases.listing.views import BaseListingView
-from unplugged import CascadingPermission, JSONAPIRoot, JSONAPIObject
 
 logger = logging.getLogger(__name__)
 

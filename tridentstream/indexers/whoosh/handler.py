@@ -1,15 +1,13 @@
 import logging
 
 from unplugged import Schema, fields
-
-from whoosh import index, analysis
-from whoosh.fields import SchemaClass, TEXT, ID
+from whoosh import analysis, index
+from whoosh.fields import ID, TEXT, SchemaClass
 from whoosh.qparser import QueryParser
 from whoosh.query import Term
 from whoosh.writing import AsyncWriter
 
 from ...plugins import IndexerPlugin, PathIndexer
-
 
 logger = logging.getLogger(__name__)
 

@@ -3,30 +3,26 @@ import time
 import uuid
 
 import rest_framework_filters as filters
-
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.http import Http404, HttpResponse
-
 from django_filters.constants import EMPTY_VALUES
-
 from rest_framework import serializers, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from unplugged import (
-    JSONAPIObject,
-    JSONAPIRoot,
-    command,
     CommandBaseMeta,
     CommandViewMixin,
+    JSONAPIObject,
+    JSONAPIRoot,
     JSONSchema,
-    Schema, fields
+    Schema,
+    command,
+    fields,
 )
 from unplugged.models import Log
 
 from ...stream import create_stream
-
 from .models import ListingItem
 
 logger = logging.getLogger(__name__)
@@ -531,7 +527,9 @@ class BaseListingView(
 
         # UserActionLog.objects.log_plugin(self.service, request.user, 'Stream started by %s' % (request.user, ),
         #                                  'Stream for %s started by %s' % (item.path, request.user))
-        with Log.objects.start_chain(self.service, "USER.STREAM_START", user=request.user) as log:
+        with Log.objects.start_chain(
+            self.service, "USER.STREAM_START", user=request.user
+        ) as log:
             log.log(0, f"Trying to stream {item.path}")
 
             viewstate = ViewState(request.user, request.GET.get("viewstate"))

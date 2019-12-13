@@ -1,8 +1,13 @@
 from django.conf.urls import url
+from unplugged import (
+    DefaultPermission,
+    RelatedPluginField,
+    Schema,
+    ServicePlugin,
+    fields,
+)
 
-from unplugged import ServicePlugin, RelatedPluginField, DefaultPermission, Schema, fields
-from ...plugins import SearcherPlugin, MetadataHandlerPlugin
-
+from ...plugins import MetadataHandlerPlugin, SearcherPlugin
 from .views import RemoteSearcherFiltersView, RemoteSearcherView
 
 

@@ -1,6 +1,5 @@
-from django.db.models import Max, Min
-
 import rest_framework_filters as filters
+from django.db.models import Max, Min
 
 from .models import ListingItemRelation
 

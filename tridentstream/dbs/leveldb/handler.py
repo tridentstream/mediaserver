@@ -1,8 +1,8 @@
 import pickle
 
-import leveldb
-
 from unplugged import Schema, fields
+
+import leveldb
 
 from ...plugins import DatabasePlugin
 

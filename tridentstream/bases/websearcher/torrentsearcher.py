@@ -1,26 +1,22 @@
 import logging
 import time
-
-import requests
-
 from datetime import timedelta
 
+import requests
 from django.utils.timezone import now
-
 from thomas import Item, router
 
-from ...exceptions import StreamFailedException, PathNotFoundException
+from ...exceptions import PathNotFoundException, StreamFailedException
 from ...plugins import SearcherPlugin
 from ...utils import urljoin
-
 from .mixins import (
+    CacheSearchMixin,
     FilterRewriteMixin,
     LoginMixin,
-    WebSessionMixin,
     TorrentMixin,
-    CacheSearchMixin,
+    WebSessionMixin,
 )
-from .schema import URLSearcherSchema, TorrentSearcherSchema, LoginTorrentSearcherSchema
+from .schema import LoginTorrentSearcherSchema, TorrentSearcherSchema, URLSearcherSchema
 
 logger = logging.getLogger(__name__)
 

@@ -3,11 +3,10 @@ import uuid
 
 from rest_framework import serializers
 
-from ...bases.metadata.mixins import PopulateMetadataJSONAPIMixin, CoverSerializerMixin
+from ...bases.metadata.mixins import CoverSerializerMixin, PopulateMetadataJSONAPIMixin
 from ...bases.metadata.schema import MetadataSchema
 from ...plugins import MetadataHandlerPlugin
-
-from .models import Availability, ListingItemRelation, ListingItemAvailability
+from .models import Availability, ListingItemAvailability, ListingItemRelation
 
 logger = logging.getLogger(__name__)
 
