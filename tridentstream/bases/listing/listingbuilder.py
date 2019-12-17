@@ -307,10 +307,7 @@ class ListingBuilder:
         """
         Link listingitems with metadata
         """
-        logger.debug(
-            "Linking listingitems with metadata from root:%s"
-            % listing_build.listing_item_root.path
-        )
+        logger.debug(f"Linking listingitems with metadata from root:{listing_build.listing_item_root.path}")
 
         listing_build.listingitem_mapping = {
             li.path: li
@@ -328,8 +325,7 @@ class ListingBuilder:
         ]
         for metadata_handler in metadata_handlers:
             logger.debug(
-                "Linking items from root %s with metadata handler %s"
-                % (listing_build.listing_item_root.path, metadata_handler.name)
+                f"Linking items from root {listing_build.listing_item_root.path} with metadata handler {metadata_handler.name}"
             )
             metadata_handler.link_metadata_listingitems(
                 listing_build, listing_build.config.get("fetch_metadata", True)

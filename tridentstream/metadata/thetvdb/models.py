@@ -50,7 +50,7 @@ class Status(models.Model):
         return self.name
 
 
-class Metadata(BaseMetadata):  # TEST 259222
+class Metadata(BaseMetadata):
     imdb_id = models.IntegerField(null=True)
 
     rating = models.DecimalField(null=True, decimal_places=2, max_digits=4)
@@ -195,7 +195,7 @@ class MetadataResolutionLink(BaseMetadataResolutionLink):
     )
 
     def resolve(self, config):
-        logger.debug("Resolving using config %r" % (config,))
+        logger.debug(f"Resolving using config {config!r}")
 
         language = config.get("search_language") or "en"
 

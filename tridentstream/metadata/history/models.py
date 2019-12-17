@@ -26,7 +26,7 @@ class History(models.Model):
         ordering = ["-last_watched"]
 
     def __str__(self):
-        return "%r watched %s at %s" % (self.user, self.name, self.last_watched)
+        return f"{self.user!r} watched {self.name} at {self.last_watched}"
 
 
 class HistoryMetadata(BaseMetadataLink):

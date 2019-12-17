@@ -19,21 +19,20 @@ class StoreListView(BaseListingView):
     def get_config_view(self, request):
         root = JSONAPIRoot()
         logger.debug(
-            "Plugin %r/%s with full sections config %r"
-            % (self.service, self.service.name, self.service.config["sections"])
+            f"Plugin {self.service!r}/{self.service.name} with full sections config {self.service.config['sections']!r}"
         )
         for section in self.service.config["sections"]:
             logger.debug(
-                "Making config view %s with settings %r" % (section["name"], section)
+                f"Making config view {section['name']} with settings {section!r}"
             )
 
             links = {
                 "self": request.build_absolute_uri(
-                    "/%s/%s" % (self.service.name, section["name"])
+                    f"/{self.service.name}/{section['name']}"
                 )
             }
             obj = JSONAPIObject(
-                "folder", "%s/%s" % (self.service.name, section["name"]), links=links
+                "folder", f"{self.service.name}/{section['name']}", links=links
             )
             obj["name"] = section["name"]
             if section.get("display_name"):
@@ -65,7 +64,7 @@ class StoreListView(BaseListingView):
         )
         search_query_cache.save()
 
-        return "%s/%s" % (path, query_hash)
+        return f"{path}/{query_hash}"
 
     def get_search_filter(self, name, level_config):
         obj = JSONAPIObject("metadata_searchfilter", name)

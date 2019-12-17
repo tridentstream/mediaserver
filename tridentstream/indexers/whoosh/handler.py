@@ -31,18 +31,17 @@ class WhooshPathIndexer(PathIndexer):
 
     def index(self, path, title):
         logger.trace(
-            "Indexing parent_path:%s, path:%s, title:%s"
-            % (self.parent_path, path, title)
+            f"Indexing parent_path:{self.parent_path}, path:{path}, title:{title}"
         )
 
         self.writer.add_document(parent_path=self.parent_path, path=path, title=title)
 
     def delete(self, path):
-        logger.trace("Deleting all indexes for path %s" % (path,))
+        logger.trace(f"Deleting all indexes for path {path}")
         self.writer.delete_by_query(Term("path", path))
 
     def commit(self):
-        logger.debug("Committing %s" % (self.parent_path,))
+        logger.debug(f"Committing {self.parent_path}")
         self.writer.commit()
 
 
@@ -59,11 +58,11 @@ class WhooshIndexerPlugin(IndexerPlugin):
             self.ix = index.create_in(path, WhooshSchema())
 
     def clear(self, parent_path):
-        logger.debug("Clearing index for %s" % (self.name,))
+        logger.debug(f"Clearing index for {self.name}")
         self.ix.delete_by_query(Term("parent_path", parent_path))
 
     def get_writer(self, parent_path):
-        logger.debug("Getting index writer for path:%s" % (parent_path,))
+        logger.debug(f"Getting index writer for path:{parent_path}")
         return WhooshPathIndexer(AsyncWriter(self.ix), parent_path)
 
     def search(self, parent_path, query):
@@ -79,9 +78,9 @@ class WhooshIndexerPlugin(IndexerPlugin):
                 seen.add(path)
                 results.append(path)
 
-        logger.debug("Searched for %r found %i results" % (query, len(results)))
+        logger.debug(f"Searched for {query!r} found {len(results)} results")
         return results
 
     def unload(self):
-        logger.debug("Unloading index %s" % (self.name,))
+        logger.debug(f"Unloading index {self.name}")
         self.ix.close()

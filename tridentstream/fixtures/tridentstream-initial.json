@@ -322,5 +322,29 @@
     },
     "model": "unplugged.plugin",
     "pk": 46
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"inputs\":[]}",
+      "name": "rfs",
+      "plugin_name": "rfs",
+      "plugin_type": "service",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 47
+  },
+  {
+    "fields": {
+      "enabled": true,
+      "config": "{\"searchers\":[],\"availability\":44}",
+      "name": "remotesearcher",
+      "plugin_name": "remotesearcher",
+      "plugin_type": "service",
+      "last_update": "2017-01-01T00:00:00.000Z"
+    },
+    "model": "unplugged.plugin",
+    "pk": 48
   }
 ]

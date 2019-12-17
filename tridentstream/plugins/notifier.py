@@ -36,7 +36,7 @@ class Notification:
         elif self.permission_type == None:
             return True
         else:
-            logger.warning("Unknown permission_type: %s" % (self.permission_type,))
+            logger.warning(f"Unknown permission_type: {self.permission_type}")
             return False
 
     def match_patterns(self, patterns):

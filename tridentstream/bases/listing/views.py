@@ -160,7 +160,7 @@ class BaseListingView(
         path = self.get_path(request, path)
 
         config = self.service.get_path_config(path)
-        logger.debug("Using config %r" % (config,))
+        logger.debug(f"Using config {config!r}")
 
         if config is None or "level" not in config:
             listingitem = self.listing_builder.get_item(path)
@@ -182,12 +182,7 @@ class BaseListingView(
         do_not_rebuild = False
         current_page = request.GET.get(self.pagination_class.page_query_param, "1")
         logger.debug(
-            "Rebuild automatically status rebuild_automatically:%s current_level:%s page:%s"
-            % (
-                config.get("rebuild_automatically"),
-                config.get("current_level"),
-                current_page,
-            )
+            f"Rebuild automatically status rebuild_automatically:{config.get('rebuild_automatically')} current_level:{config.get('current_level')} page:{current_page}"
         )
         if (
             current_page != "1"
@@ -257,13 +252,11 @@ class BaseListingView(
                     "metadata_handlers"
                 ]:
                     logger.debug(
-                        "Finding metadata from metadata handler %s for parent"
-                        % (metadata_handler.name,)
+                        f"Finding metadata from metadata handler {metadata_handler.name} for parent"
                     )
                     metadata_handler.populate_metadata_jsonapi(request, root)
                     logger.debug(
-                        "Finished metadata from metadata handler %s"
-                        % (metadata_handler.name,)
+                        f"Finished metadata from metadata handler {metadata_handler.name}"
                     )
 
             add_commands(parent, commands_obj)
@@ -303,13 +296,12 @@ class BaseListingView(
 
         for metadata_handler in config["level"]["metadata_handlers"]:
             logger.debug(
-                "Finding metadata from metadata handler %s" % (metadata_handler.name,)
+                f"Finding metadata from metadata handler {metadata_handler.name}"
             )
             start_time = time.time()
             metadata_handler.populate_metadata_jsonapi(request, root)
             logger.debug(
-                "Finished metadata from metadata handler %s it took %s"
-                % (metadata_handler.name, time.time() - start_time)
+                f"Finished metadata from metadata handler {metadata_handler.name} it took {time.time() - start_time}"
             )
 
         if "parent" not in root.meta and root.data:
@@ -337,7 +329,7 @@ class BaseListingView(
                     continue
 
                 if prefix:
-                    name = "%s__%s" % (prefix, base_name)
+                    name = f"{prefix}__{base_name}"
                 else:
                     name = base_name
 
@@ -398,7 +390,7 @@ class BaseListingView(
 
         metadata_handlers = level_config.get("metadata_handlers", [])
         obj["metadata_handlers"] = [
-            "metadata_%s" % (mh.plugin_name,) for mh in metadata_handlers
+            f"metadata_{mh.plugin_name}" for mh in metadata_handlers
         ]
 
         filter_ = self.create_filter(metadata_handlers)
@@ -430,9 +422,9 @@ class BaseListingView(
         for metadata_handler in metadata_handlers:
             logger.debug("Checking %s for filter" % metadata_handler.name)
             if hasattr(metadata_handler, "filter") and metadata_handler.filter:
-                name = "metadata_%s" % metadata_handler.plugin_name
-                filter_name = "metadata_%s" % metadata_handler.plugin_name
-                logger.debug("Adding %s to filter" % name)
+                name = f"metadata_{metadata_handler.plugin_name}"
+                filter_name = f"metadata_{metadata_handler.plugin_name}"
+                logger.debug(f"Adding {name} to filter")
                 f[name] = filters.RelatedFilter(
                     metadata_handler.filter,
                     queryset=metadata_handler.listing_item_relation_model.objects.all(),
@@ -443,7 +435,7 @@ class BaseListingView(
                 )
                 if hasattr(metadata_handler.filter.Meta, "order_by"):
                     for key in metadata_handler.filter.Meta.order_by or []:
-                        logger.debug("Found ordering key %s" % key)
+                        logger.debug(f"Found ordering key {key}")
                         field = metadata_handler.filter.base_filters[key]
                         aggregators = filter_order_by_aggregate.get(key)
 
@@ -461,7 +453,7 @@ class BaseListingView(
                         )
                     )
 
-        logger.info("SectionsFilter built with %i keys" % len(f))
+        logger.info(f"SectionsFilter built with {len(f)} keys")
 
         f["o"] = AggregatedOrderingFilter(
             fields=order_by_mapping.items(), field_aggregation=order_by_aggregate
@@ -536,7 +528,7 @@ class BaseListingView(
             root = JSONAPIRoot()
 
             for history_plugin in config.get("histories", []):
-                logger.debug("Logging history to %s" % (history_plugin.name,))
+                logger.debug(f"Logging history to {history_plugin.name}")
                 history_plugin.log_history(config, listingitem, viewstate)
 
             viewstate_obj = JSONAPIObject("viewstate", viewstate.id)
@@ -565,7 +557,7 @@ class BaseListingView(
         tag_plugin = self.get_tag_plugin(config, handler)
         if not tag_plugin:
             jsonapi_root = JSONAPIRoot.error_status(
-                id_="invalid_tag", detail="Tag %r is not a known tag" % (handler,)
+                id_="invalid_tag", detail=f"Tag {handler!r} is not a known tag"
             )
             return Response(
                 jsonapi_root.serialize(request), status=status.HTTP_400_BAD_REQUEST
@@ -581,7 +573,7 @@ class BaseListingView(
         tag_plugin = self.get_tag_plugin(config, handler)
         if not tag_plugin:
             jsonapi_root = JSONAPIRoot.error_status(
-                id_="invalid_tag", detail="Tag %r is not a known tag" % (handler,)
+                id_="invalid_tag", detail=f"Tag {handler!r} is not a known tag"
             )
             return Response(
                 jsonapi_root.serialize(request), status=status.HTTP_400_BAD_REQUEST
@@ -601,7 +593,7 @@ class BaseListingView(
 
         config, parent_path = self.service.get_nearest_config(path)
 
-        logger.info("Trying to get listingitem for path %r" % (path,))
+        logger.info(f"Trying to get listingitem for path {path!r}")
 
         if config is None:
             raise Http404

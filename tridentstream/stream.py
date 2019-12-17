@@ -12,7 +12,7 @@ class Stream:
 
     def to_jsonapi(self, request):
         obj = JSONAPIObject(
-            "stream_%s" % self.playhandler,
+            f"stream_{self.playhandler}",
             self.name,
             links={"stream": request.build_absolute_uri(self.url)},
         )

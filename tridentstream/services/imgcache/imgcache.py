@@ -26,16 +26,16 @@ class ImgCachePlugin(ImageCachePlugin):
     config_schema = ImgCachePluginSchema
 
     def get_image_path(self, url):
-        if cache.get("imgcache:%s:%s" % (self.name, url)) == "F":
+        if cache.get(f"imgcache:{self.name}:{url}") == "F":
             return None
 
         ext = url.split("?")[0].split(".")[-1].lower()
         if ext not in ALLOWED_FILE_EXTENSIONS:
-            logger.warning("Unknown file-extension: %s" % (ext,))
+            logger.warning(f"Unknown file-extension: {ext}")
             return None
 
-        filename = "%s.%s" % (hash_string(url), ext)
-        path = "%s_%s/%s" % (self.plugin_name, self.name, filename)
+        filename = f"{hash_string(url)}.{ext}"
+        path = f"{self.plugin_name}_{self.name}/{filename}"
 
         if not default_storage.exists(path):
             request_failed = False
@@ -49,11 +49,11 @@ class ImgCachePlugin(ImageCachePlugin):
                     request_failed = True
 
             if request_failed:
-                cache.set("imgcache:%s:%s" % (self.name, url), "F", 30 * 60)
-                logger.warning("Failed to fetch url %s" % (url,))
+                cache.set(f"imgcache:{self.name}:{url}", "F", 30 * 60)
+                logger.warning(f"Failed to fetch url {url}")
                 return None
 
-            logger.debug("Saving %s to %s" % (url, path))
+            logger.debug(f"Saving {url} to {path}")
 
             default_storage.save(path, io.BytesIO(r.content))
 
@@ -62,11 +62,7 @@ class ImgCachePlugin(ImageCachePlugin):
     def get_image_url(self, request, url):
         signer = Signer()
         signed_url = signer.sign(url)
-        result_path = "/%s/%s?url=%s" % (
-            self.config["image_server"].name,
-            self.name,
-            quote_plus(signed_url),
-        )
+        result_path = f"/{self.config['image_server'].name}/{self.name}?url={quote_plus(signed_url)}"
 
         return request.build_absolute_uri(result_path)
 

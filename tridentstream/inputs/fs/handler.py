@@ -24,10 +24,6 @@ from ...plugins import (
 )
 from ...vfs import FileSystem
 
-try:
-    from scandir import walk
-except ImportError:
-    from os import walk
 
 COMMIT_COUNTER = 10000
 
@@ -123,11 +119,10 @@ class FilesystemInputPlugin(InputPlugin):
             for path in glob.glob(path_template["path"]):
                 self.paths.append((path_template.get("virtual_root", ""), path))
                 logger.info(
-                    "Added path %r to virtual path %r"
-                    % (path, path_template.get("virtual_root", ""))
+                    f"Added path {path!r} to virtual path {path_template.get('virtual_root', '')!r}"
                 )
 
-        self.route_input_fs_list = "input_fs_list_%s" % (self.name,)
+        self.route_input_fs_list = f"input_fs_list_{self.name}"
 
         router.register_handler(
             self.route_input_fs_list, self.thomas_list, False, True, False
@@ -206,8 +201,7 @@ class FilesystemInputPlugin(InputPlugin):
                     plugin.handle(self.vfs, metadata["path"], metadata["_actual_path"])
                 except:
                     logger.exception(
-                        "Failed to handle %s with plugin %r"
-                        % (metadata["_actual_path"], plugin)
+                        f"Failed to handle {metadata['_actual_path']} with plugin {plugin!r}"
                     )
 
     def close(self):
@@ -220,12 +214,12 @@ class FilesystemInputPlugin(InputPlugin):
         if modified_since and last_modified <= modified_since:
             raise NotModifiedException()
 
-        logger.info("Listing path %r with depth %s" % (path, depth))
+        logger.info(f"Listing path {path!r} with depth {depth}")
         listing = self.vfs.list_dir(path, depth)
         return listing
 
     def stream(self, path):
-        logger.info("Trying to stream %r" % path)
+        logger.info(f"Trying to stream {path!r}")
 
         item = self.list(path, -1)
         return item.stream()
@@ -234,7 +228,7 @@ class FilesystemInputPlugin(InputPlugin):
         try:
             return self.list(path, -1)
         except PathNotFoundException:
-            logger.info("Getting file at path %r" % (path,))
+            logger.info(f"Getting file at path {path!r}")
             return self.vfs.list_file(path)
 
     def rescan(self, update_all_metadata=False):
@@ -251,9 +245,9 @@ class FilesystemInputPlugin(InputPlugin):
             defer.returnValue(None)
 
         notification = Notification(
-            "admin.%s.%s.rescan" % (self.plugin_name, self.name),
+            f"admin.{self.plugin_name}.{self.name}.rescan",
             "info",
-            "Filesystem %s" % (self.name,),
+            f"Filesystem {self.name}",
             "Started to rescan",
             permission_type="is_admin",
         )
@@ -278,16 +272,16 @@ class FilesystemInputPlugin(InputPlugin):
                 DONE = 2
 
             def walk_path(queue, prefix, path):
-                logger.info("Starting to scan %r with prefix %r" % (path, prefix))
+                logger.info(f"Starting to scan {path!r} with prefix {prefix!r}")
                 list_queue = []
                 queue_size = 0
 
-                for r, dirs, files in walk(path, followlinks=True):
+                for r, dirs, files in os.walk(path, followlinks=True):
                     useful_files = []
                     for f in files:
                         full_path = os.path.join(r, f)
                         if not os.path.exists(full_path):
-                            logger.debug("We found broken link: %s" % (full_path,))
+                            logger.debug(f"We found broken link: {full_path}")
                             continue
 
                         useful_files.append((f, os.path.getsize(full_path)))
@@ -301,7 +295,7 @@ class FilesystemInputPlugin(InputPlugin):
                         queue_size = 0
 
                     if self.should_die:
-                        logger.info("Got the death in walker for %s." % path)
+                        logger.info(f"Got the death in walker for {path}")
                         return
 
                 if list_queue:
@@ -309,7 +303,7 @@ class FilesystemInputPlugin(InputPlugin):
 
                 queue.put((QueueCommand.DONE, path))
 
-                logger.info("Done scanning %r" % path)
+                logger.info(f"Done scanning {path!r}")
 
             def insert_into_vfs(vfs, queue, path_count):
                 with vfs.session(True, always_trigger_new=update_all_metadata):
@@ -353,13 +347,13 @@ class FilesystemInputPlugin(InputPlugin):
                                     vfs.add_dir("/".join(path), int(time.time()))
                         elif cmd == QueueCommand.DONE:
                             _, path = job
-                            logger.info("Done inserting %r" % path)
+                            logger.info(f"Done inserting {path!r}")
                             path_count -= 1
                         else:
-                            logger.error("Unknown command %r" % job)
+                            logger.error(f"Unknown command {job!r}")
 
                         if self.should_die:
-                            logger.info("Got the death in inserter for %s." % path)
+                            logger.info(f"Got the death in inserter for {path}")
                             break
 
                 self.last_update = datetime.now()
@@ -383,7 +377,7 @@ class FilesystemInputPlugin(InputPlugin):
             delta = datetime.now() - notification_start_dt
             if self.notifier:
                 notification = notification.copy(
-                    body="Finished rescanning, it took %s" % (delta,)
+                    body=f"Finished rescanning, it took {delta}"
                 )
                 reactor.callInThread(self.notifier.notify, notification)
 

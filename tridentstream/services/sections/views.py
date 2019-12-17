@@ -17,16 +17,16 @@ class SectionsListView(BaseListingView):
         root = JSONAPIRoot()
         for section in self.service.config["sections"]:
             logger.debug(
-                "Making config view %s with settings %r" % (section["name"], section)
+                f"Making config view {section['name']} with settings {section!r}"
             )
 
             links = {
                 "self": request.build_absolute_uri(
-                    "/%s/%s" % (self.service.name, section["name"])
+                    f"/{self.service.name}/{section['name']}"
                 )
             }
             obj = JSONAPIObject(
-                "folder", "%s/%s" % (self.service.name, section["name"]), links=links
+                "folder", f"{self.service.name}/{section['name']}", links=links
             )
             obj["name"] = section["name"]
             if section.get("display_name"):

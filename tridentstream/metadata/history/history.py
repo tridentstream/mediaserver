@@ -36,13 +36,12 @@ class HistoryHistoryPlugin(HistoryPlugin):
             last_watched__gte=now() - HISTORY_WATCH_PERIOD,
         )
         logger.debug(
-            "Trying to log history entry with listingitem:%r to user:%r"
-            % (listingitem, viewstate.user)
+            f"Trying to log history entry with listingitem:{listingitem!r} to user:{viewstate.user!r}"
         )
 
         if histories:
             history = histories[0]
-            logger.debug("Reusing old history entry:%r" % (history,))
+            logger.debug(f"Reusing old history entry:{history!r}")
         else:
             history = self.history.model(user=viewstate.user, name=listingitem.name)
             logger.debug("Creating new history entry")
@@ -92,8 +91,7 @@ class HistoryHistoryPlugin(HistoryPlugin):
 
         if viewstate_obj.values:
             logger.debug(
-                "Existing viewstate already there for id %s, updating with new values"
-                % (viewstate_obj.identifier)
+                f"Existing viewstate already there for id {viewstate_obj.identifier}, updating with new values"
             )
             viewstate.update(viewstate_obj.values)
 
@@ -106,14 +104,12 @@ class HistoryHistoryPlugin(HistoryPlugin):
             )
         except self.history.viewstate_model.DoesNotExist:
             logger.warning(
-                "Got update to unknown viewstate %s for user %s"
-                % (viewstate.id, viewstate.user)
+                f"Got update to unknown viewstate {viewstate.id} for user {viewstate.user}"
             )
             return
 
         viewstate_obj.values.update(viewstate)
         viewstate_obj.save()
         logger.debug(
-            "Updated viewstate %s for user %s with %s"
-            % (viewstate.id, viewstate.user, viewstate_obj.values)
+            f"Updated viewstate {viewstate.id} for user {viewstate.user} with {viewstate_obj.values}"
         )

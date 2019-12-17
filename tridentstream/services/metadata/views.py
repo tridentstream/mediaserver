@@ -15,8 +15,7 @@ class MetadataView(APIView):
 
     def get(self, request, metadata_handler, identifier):
         logger.debug(
-            "Fetching metadata using %s with identifier %s"
-            % (metadata_handler, identifier)
+            f"Fetching metadata using {metadata_handler} with identifier {identifier}"
         )
         for plugin in self.service._related_plugins:
             if (
@@ -25,7 +24,7 @@ class MetadataView(APIView):
             ):
                 break
         else:
-            logger.warning("Did not find metadata_handler %s" % (metadata_handler,))
+            logger.warning(f"Did not find metadata_handler {metadata_handler}")
             raise Http404
 
         metadata = plugin.get_metadata(request, identifier)
@@ -34,7 +33,7 @@ class MetadataView(APIView):
 
         root = JSONAPIRoot()
 
-        identifier = "%s:%s" % (plugin.plugin_name, identifier)
+        identifier = f"{plugin.plugin_name}:{identifier}"
         obj_type = plugin.get_jsonapi_type()
         obj = JSONAPIObject(obj_type, identifier)
         obj.update(metadata)

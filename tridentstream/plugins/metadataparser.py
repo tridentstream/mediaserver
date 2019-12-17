@@ -24,5 +24,5 @@ class MetadataParserPlugin(PluginBase):  # add context manager
 
     def set_metadata_parent_path(self, vfs, virtual_path, key, value):
         parent_path = "/".join(virtual_path.split("/")[:-1])
-        metadata = {"metadata:%s:%s" % (self.name, key): value}
+        metadata = {f"metadata:{self.name}:{key}": value}
         vfs.update_metadata(DatabaseType.DIRECTORY, parent_path, metadata)

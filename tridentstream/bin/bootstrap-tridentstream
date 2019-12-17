@@ -8,12 +8,12 @@ from django.core.management.utils import get_random_secret_key
 # from xmlrpc.client import ServerProxy
 
 
-PLUGINS_REQUIREMENTS_FILE = 'tridentstream-plugins-requirements.txt'
-BOOTSTRAP_STATUS_FILE = 'tridentstream-bootstrap-progress.json'
+PLUGINS_REQUIREMENTS_FILE = "tridentstream-plugins-requirements.txt"
+BOOTSTRAP_STATUS_FILE = "tridentstream-bootstrap-progress.json"
 
 write_files = {}
 
-write_files['manage.py'] = """#!/usr/bin/env python
+write_files["manage.py"] = """#!/usr/bin/env python
 import os
 import sys
 
@@ -33,11 +33,11 @@ if __name__ == '__main__':
     print('Writing configuration files')
     for fn, data in write_files.items():
         if not os.path.exists(fn):
-            print('Writing file %s' % (fn, ))
+            print(f'Writing file {fn}')
             with open(fn, 'w') as f:
                 f.write(data)
         else:
-            print('Skipping file %s because it already exists' % (fn, ))
+            print(f'Skipping file {fn} because it already exists')
 
     # if os.path.exists(PLUGINS_REQUIREMENTS_FILE):
     #     client = ServerProxy('https://pypi.org/pypi')
@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
     from unplugged.models import Plugin
     if len(Plugin.objects.all()) == 0:
-        print('No plugins found, pushing increment ID above %i' % (PUSH_PLUGIN_ID, ))
+        print(f'No plugins found, pushing increment ID above {PUSH_PLUGIN_ID}')
         while True:
             p = Plugin.objects.create(name='incrementing', plugin_name='incrementing', plugin_type='incrementing')
             pk = p.pk

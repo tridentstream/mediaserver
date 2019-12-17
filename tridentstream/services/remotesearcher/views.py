@@ -45,7 +45,7 @@ class RemoteSearcherView(APIView):
                 path=path,
             )
         except ListingCache.DoesNotExist:
-            logger.warning("Unable to find cache for search_token:%s path:%s")
+            logger.warning(f"Unable to find cache for search_token:{search_token} path:{path}")
             raise Http404
 
         return Item.unserialize(listing_cache.listing).get_item_from_path(sub_path)
@@ -56,7 +56,7 @@ class RemoteSearcherView(APIView):
             if searcher.name == searcher_name:
                 return searcher
         else:
-            logger.warning("Unknown searcher:%s" % (searcher_name,))
+            logger.warning(f"Unknown searcher:{searcher_name}")
             raise Http404
 
     def get(self, request, searcher_name, search_token="", path=""):
@@ -70,8 +70,7 @@ class RemoteSearcherView(APIView):
             item = self.get_item(searcher_name, search_token, path, sub_path)
             if not item:
                 logger.warning(
-                    "Unknown item search_token:%s path:%s sub_path:%s"
-                    % (search_token, path, sub_path)
+                    f"Unknown item search_token:{search_token} path:{path} sub_path:{sub_path}"
                 )
                 raise Http404
         else:
@@ -80,14 +79,13 @@ class RemoteSearcherView(APIView):
             search_query = SearchQuery(searcher.filters, query)
 
             logger.info(
-                "Got request to search for search_token:%s query:%r"
-                % (search_token, query)
+                f"Got request to search for search_token:{search_token} query:{query!r}"
             )
             item = searcher.get_item(search_token, search_query)
 
-        full_path = ("%s/%s" % (path, sub_path)).strip("/")
+        full_path = (f"{path}/{sub_path}").strip("/")
         logger.debug(
-            "Listing search_token:%s path:%s item:%r" % (search_token, full_path, item)
+            f"Listing search_token:{search_token} path:{full_path} item:{item!r}"
         )
         item.list()
         ListingCache.objects.update_or_create(

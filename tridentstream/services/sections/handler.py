@@ -356,11 +356,11 @@ class SectionsService(BaseListingService):
         plugin_path_pairs = []
         for input_config in config["inputs"]:
             input_path = input_config.get("path", "").strip("/")
-            listing_path = "%s/%s" % (input_path, config["path"])
+            listing_path = f"{input_path}/{config['path']}"
             plugin_path_pairs.append((input_config["input"], listing_path.strip("/")))
 
         logger.info(
-            "Trying to create listing for %r - path:%s" % (plugin_path_pairs, path)
+            f"Trying to create listing for {plugin_path_pairs!r} - path:{path}"
         )
         item = InputPluginManager.get_item_multiple(plugin_path_pairs)
         if "/" not in path and "display_name" in config:

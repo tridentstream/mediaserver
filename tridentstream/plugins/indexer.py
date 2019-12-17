@@ -48,7 +48,7 @@ class IndexerPlugin(PluginBase):
 
     def get_database_path(self, path):
         """Turn a relative into an absolute path and make sure it exists"""
-        path = path or ("%s_%s" % (self.plugin_type, self.name))
+        path = path or f"{self.plugin_type}_{self.name}"
         if not os.path.isabs(path):
             path = os.path.join(settings.DATABASE_ROOT, path)
 

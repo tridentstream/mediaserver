@@ -35,7 +35,7 @@ class WAMPNotifierHandlerPlugin(NotifierPlugin):
             config_plugin.set_config_schema(namespace, key, NotifyFilterSchema)
 
     def get_config_values(self):
-        return "%s:%s" % (self.plugin_type, self.name), "notification_filters"
+        return f"{self.plugin_type}:{self.name}", "notification_filters"
 
     def notify(self, notification):
         config_plugin = self.config.get("config")

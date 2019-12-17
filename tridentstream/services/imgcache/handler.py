@@ -5,8 +5,6 @@ from unplugged import Schema, ServicePlugin
 
 from .views import ImageCacheView
 
-ALLOWED_FILE_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
-
 logger = logging.getLogger(__name__)
 
 

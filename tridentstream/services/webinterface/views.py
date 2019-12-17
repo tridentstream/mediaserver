@@ -26,7 +26,7 @@ class IndexView(View):
             index_data = f.read()
 
         index_data = index_data.replace(
-            '<base href="/">', '<base href="/%s/">' % (self.service.name,)
+            '<base href="/">', f'<base href="/{self.service.name}/">'
         )
 
         return HttpResponse(index_data, content_type="text/html")

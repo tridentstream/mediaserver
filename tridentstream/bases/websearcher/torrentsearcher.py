@@ -31,9 +31,9 @@ class URLSearcherPluginBase(
     def __init__(self, config):
         self.config = config
         self.priority = config.get("priority", 10)
-        self.route_searcher_base_query = "searcher_base_query_%s" % (self.name,)
-        self.route_searcher_base_list = "searcher_base_list_%s" % (self.name,)
-        self.route_searcher_base_stream = "searcher_base_stream_%s" % (self.name,)
+        self.route_searcher_base_query = f"searcher_base_query_{self.name}"
+        self.route_searcher_base_list = f"searcher_base_list_{self.name}"
+        self.route_searcher_base_stream = f"searcher_base_stream_{self.name}"
 
         router.register_handler(
             self.route_searcher_base_query, self.thomas_query, False, True, False
@@ -79,7 +79,7 @@ class URLSearcherPluginBase(
 
     def add_cache_list_routes(self, item, search_token, root_path, path="", skip=False):
         if path:
-            path = "%s/%s" % (path, item.id)
+            path = f"{path}/{item.id}"
         else:
             path = item.id
 
@@ -106,7 +106,7 @@ class URLSearcherPluginBase(
     ):
         if not skip:
             if path:
-                path = "%s/%s" % (path, item.id)
+                path = f"{path}/{item.id}"
             else:
                 path = item.id
 
@@ -129,8 +129,7 @@ class URLSearcherPluginBase(
         modified_since=None,
     ):  # Fetches listing from website
         logger.debug(
-            "Trying to query search_token:%s path:%s response_type:%s url:%s"
-            % (search_token, path, response_type, url)
+            f"Trying to query search_token:{search_token} path:{path} response_type:{response_type} url:{url}"
         )
 
         cached_search_result = self.get_cache_results(search_token, path)
@@ -139,8 +138,7 @@ class URLSearcherPluginBase(
             and cached_search_result.modified > now() - self.search_result_cache_time
         ):
             logger.debug(
-                "We got a cached query result for search_token:%s, using that"
-                % (search_token,)
+                f"We got a cached query result for search_token:{search_token}, using that"
             )
             return cached_search_result
 
@@ -163,15 +161,13 @@ class URLSearcherPluginBase(
         self, item, search_token, path, sub_path, depth=0, modified_since=None
     ):  # Queries a cache for a listing
         logger.debug(
-            "Trying to list search_token:%s path:%s sub_path:%s"
-            % (search_token, path, sub_path)
+            f"Trying to list search_token:{search_token} path:{path} sub_path:{sub_path}"
         )
 
         cached_search_result = self.get_cache_results(search_token, path)
         if not cached_search_result:
             logger.debug(
-                "Cannot list because we were unable to find cache for search_token:%s path:%s"
-                % (search_token, path)
+                f"Cannot list because we were unable to find cache for search_token:{search_token} path:{path}"
             )
             raise PathNotFoundException()
 
@@ -265,9 +261,7 @@ class TorrentSearcherPluginBase(TorrentMixin, URLSearcherPluginBase):
 
     def __init__(self, config):
         super().__init__(config)
-        self.route_searcher_base_list_torrent = "searcher_base_list_torrent_%s" % (
-            self.name,
-        )
+        self.route_searcher_base_list_torrent = f"searcher_base_list_torrent_{self.name}"
         router.register_handler(
             self.route_searcher_base_list_torrent,
             self.thomas_list_torrent,
@@ -299,8 +293,7 @@ class TorrentSearcherPluginBase(TorrentMixin, URLSearcherPluginBase):
             > 0
         ):
             logger.info(
-                "Cannot stream name:%s item:%r because we have reached cap"
-                % (self.name, item)
+                f"Cannot stream name:{self.name} item:{item!r} because we have reached cap"
             )
             raise StreamFailedException()
 

@@ -78,7 +78,7 @@ class PlayerConsumer(DRFWebsocketConsumer):
         self.player_coordinator = self.service.get_player_coordinator(self.user)
 
     def receive(self, text_data=None, bytes_data=None):
-        logger.info("Got message from user %r: %s" % (self.user, text_data))
+        logger.info(f"Got message from user {self.user!r}: {text_data}")
         response = JSONRPCResponseManager.handle(text_data, self.dispatcher).data
         return self.send(text_data=json.dumps(response))
 
@@ -95,24 +95,24 @@ class PlayerConsumer(DRFWebsocketConsumer):
         return d
 
     def register_player(self, player_id, name, commands, options):
-        logger.debug("Adding a player:%s for %s" % (player_id, self.user.username))
+        logger.debug(f"Adding a player:{player_id} for {self.user.username}")
         self.player_id = player_id
         self.player_coordinator.add_player(self, player_id, name, commands, options)
 
     def register_controller(self):
-        logger.debug("Adding a controller for %s" % (self.user.username,))
+        logger.debug(f"Adding a controller for {self.user.username}")
         self.controller = True
         self.player_coordinator.add_controller(self)
 
     def player_command(self, player_id, method, *args):
-        logger.debug("Calling command %s on player_id %s" % (method, player_id))
+        logger.debug(f"Calling command {method} on player_id {player_id}")
         player = self.player_coordinator.get_player(player_id)
         player.command(method, *args)
 
     def player_change_state(self, state, values, viewstate_id=None):
         player = self.player_coordinator.get_player(self.player_id)
         if not player:
-            logger.info("Unknown player %s found, dropping" % (self.player_id))
+            logger.info(f"Unknown player {self.player_id} found, dropping")
             self.close()
             return
 
@@ -124,7 +124,7 @@ class PlayerConsumer(DRFWebsocketConsumer):
         player.request_state(state, values)
 
     def disconnect(self, message, **kwargs):
-        logger.debug("User connection lost %s" % (self.user,))
+        logger.debug(f"User connection lost {self.user!r}")
 
         if self.controller:
             self.player_coordinator.remove_controller(self)

@@ -14,9 +14,9 @@ from .models import AvailableMedia, ListingCache, TorrentFile, WebSession
 logger = logging.getLogger(__name__)
 
 
-class FilterRewriteMixin:  # tidal: site mapping
+class FilterRewriteMixin:  # trident: site mapping
     field_rewrite = {}
-    choices_rewrite = {}  # tidal-field: {tidal-choice: rewrite target}
+    choices_rewrite = {}  # trident-field: {trident-choice: rewrite target}
     order_rewrite = {}
 
     postprocess_field = {}  # target field, what to do with various stuff
@@ -107,7 +107,7 @@ class LoginMixin:
     login_check_delay = timedelta(hours=2)
 
     def check_site_usable(self, session):
-        logger.info("Checking if %s is usable" % (self.name,))
+        logger.info(f"Checking if {self.name} is usable")
         if (
             self.login_checked
             and self.last_failure
@@ -122,7 +122,7 @@ class LoginMixin:
         self.login(session)
 
     def login(self, session):
-        logger.info("Clearing session and logging in to %s" % (self.name,))
+        logger.info(f"Clearing session and logging in to {self.name}")
         session.cookies.clear()
         data = {}
         for field in self.login_fields:
@@ -146,7 +146,7 @@ class LoginMixin:
             raise PathNotFoundException()
 
     def login_test(self, session):
-        logger.info("Testing login at %s" % (self.name,))
+        logger.info(f"Testing login at {self.name}")
 
         if (
             self.last_login_check
@@ -207,7 +207,7 @@ class TorrentMixin:
         try:
             return value.decode("utf-8")
         except UnicodeDecodeError:
-            logger.debug("Failed to decode %r using UTF-8" % value)
+            logger.debug(f"Failed to decode {value} using UTF-8")
 
         return value.decode("iso-8859-1")
 
@@ -242,7 +242,7 @@ class TorrentMixin:
                     self.try_decode(x) for x in f[b"path"] if x
                 ]  # remove empty fragments
                 if not self.is_legal_path(path):
-                    logger.warning("Dangerous path %r found, skipping" % (path,))
+                    logger.warning(f"Dangerous path {path!r} found, skipping")
                     continue
 
                 name = path.pop()
@@ -275,7 +275,7 @@ class CacheSearchMixin:
                 app=self.name, search_token=search_token, path=path
             )
         except ListingCache.DoesNotExist:
-            logger.info("Unable to find listing for search_token:%s" % (search_token))
+            logger.info(f"Unable to find listing for search_token:{search_token}")
             return
 
         return Item.unserialize(listing_cache.listing)

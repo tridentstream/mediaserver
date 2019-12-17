@@ -10,7 +10,7 @@ Stream everything...
 WARNING! ALPHA SOFTWARE
 --------------------------------
 
-Tridentstream is currently alpha-software and this means stuff is broken and stupid.
+Tridentstream is currently alpha software and this means stuff is broken and things change.
 It also means that any plugin you make or use can break with any given update.
 
 Feel free to report bugs and potentially missing features so we can move the whole project into beta.
@@ -18,7 +18,7 @@ You can also take this chance to move the whole project in a direction you like.
 
 Due to the Alpha status (unstable interfaces between plugins internally) the tests are quite sparse. So things broken might not be caught automatically.
 
-The Alpha status includes the documentation that might be lacking or completely missing regarding certain aspects.
+The Alpha status includes the documentation that might be severely lacking or completely missing regarding certain aspects.
 
 
 Requirements
@@ -45,7 +45,7 @@ With docker and docker-compose
 Requirements
 
 * A server with root access (Ubuntu or Debian for this guide).
-* A domain already pointing towards the server.
+* A domain already pointing to the server.
 
 If you do not already have docker and docker-compose installed, do this:
 
@@ -72,7 +72,7 @@ To get started, clone the setups repository
 
 .. code-block:: bash
 
-    git clone https://github.com/tridentstream/setups
+    git clone --depth 1 https://github.com/tridentstream/setups
 
 Head into the linux-docker folder
 
@@ -113,7 +113,7 @@ First time you login, a user is created with the info you logged in with. That i
 
 After you logged in, head over to the Admin page, click "Plugins".
 
-The first plugin type you want to add is a new data source, that's the plugins on the right of the page.
+The first plugin type you want to add is a new data source, that's the plugins on the right side of the page.
 This can be one from local or remote data, or it can be sourced from website you have access to (i.e. a searcher).
 
 Find one in the list that fits your need and add it. Then add a Section or a Store that works with your input.

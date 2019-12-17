@@ -8,8 +8,6 @@ import environ
 Tridentstream Django settings.
 """
 
-
-
 env = environ.Env(
     ALLOWED_HOSTS=(list, ["*"]),
     MEDIA_ROOT=(str, "media"),
@@ -49,7 +47,7 @@ else:
 
 DATABASE_APPS = (
     "tridentstream.dbs.leveldb",
-    "tridentstream.dbs.lmdb",
+    # "tridentstream.dbs.lmdb", # TODO: make auto growing before re-enabling
     "tridentstream.dbs.memory",
     "tridentstream.dbs.shelve",
 )
@@ -159,13 +157,12 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
-            "debug": True,
         },
     }
 ]
 
 # Password validation
-# https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [  # TODO: feedback needed in webinterface
     {
@@ -178,7 +175,7 @@ AUTH_PASSWORD_VALIDATORS = [  # TODO: feedback needed in webinterface
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/1.7/topics/i18n/
+# https://docs.djangoproject.com/en/2.2/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
 
@@ -205,7 +202,7 @@ REST_FRAMEWORK = {
 
 APPEND_SLASH = False
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.7/howto/static-files/
+# https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = "/djangostatic/"
 MEDIA_URL = "/media/"

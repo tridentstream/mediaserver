@@ -20,17 +20,9 @@ from twisted.python import log, usage
 from twisted.web import resource, server
 
 # TODO: Remove - there is a runaway thread problem in Channels
-# that is basically a memory leak. Anything memory heavy should be manually
-# managed thread-wise.
+# that is basically a memory leak. Anything memory heavy should probably be
+# manually managed thread-wise.
 os.environ["ASGI_THREADS"] = "8"
-
-
-
-
-
-
-
-
 
 os.environ["DJANGO_SETTINGS_MODULE"] = "main.settings"
 
@@ -116,7 +108,6 @@ class ServiceMaker(object):
         logging.Logger.trace = trace
 
         import urllib3  # TODO: remove this code again, not sure why it doesn't just fix it by itself.
-
         urllib3.disable_warnings()
 
         if options["djangodebug"]:
@@ -205,8 +196,6 @@ class ServiceMaker(object):
             from unplugged.bootstrap import bootstrap_all
 
             bootstrap_all()
-            # from unplugged.models import Plugin
-            # Plugin.objects.bootstrap()
 
         reactor.callLater(0, threads.deferToThread, initialize)
 

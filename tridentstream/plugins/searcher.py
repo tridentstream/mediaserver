@@ -51,7 +51,7 @@ class SearcherFilter:
 
     def set_choices(self, field, choices):
         if field not in self.fields:
-            logger.warning("Trying to set choices for unknown field %s" % (field,))
+            logger.warning(f"Trying to set choices for unknown field {field}")
 
         self.choices[field] = choices
 
@@ -153,7 +153,7 @@ class SearcherPluginManager:
                         continue
 
                 except:
-                    logger.exception("Failed to get filter %r" % plugin.name)
+                    logger.exception(f"Failed to get filter {plugin.name}")
                     continue
 
                 if retval is None:

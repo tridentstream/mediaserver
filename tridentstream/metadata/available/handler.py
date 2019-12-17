@@ -23,7 +23,7 @@ class AvailableSerializer(serializers.ModelSerializer):
         return obj.pk
 
     def get_metadata_type(self, obj):
-        return "metadata_%s" % obj.metadata_name
+        return f"metadata_{obj.metadata_name}"
 
     def get_populated(self, obj):
         return True
@@ -157,5 +157,5 @@ class AvailableMetadataHandlerPlugin(
 
     def set_available(self, item):
         """Sets the correct metadata key to indicate availability"""
-        logger.trace("Setting item:%r as available" % (item,))
+        logger.trace(f"Setting item:{item!r} as available")
         item.setdefault("metadata", {})["available"] = True

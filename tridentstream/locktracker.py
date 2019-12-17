@@ -16,7 +16,7 @@ class PathLockTracker:
 
     def __enter__(self):
         logger.debug(
-            "Trying to figure out how to handle the lock of path:%r" % (self.path,)
+            f"Trying to figure out how to handle the lock of path:{self.path}"
         )
 
         found_existing_lock = False
@@ -44,14 +44,14 @@ class PathLockTracker:
         return self
 
     def __exit__(self, type_, value, traceback):
-        logger.debug("Done with one event of path:%r", (self.path,))
+        logger.debug(f"Done with one event of path:{self.path}")
         if not self.waited:
             with self.locktracker.build_lock:
                 if self.path in self.locktracker.locks:
                     del self.locktracker.locks[self.path]
                 else:
                     logger.warning(
-                        "Was unable to delete event for path:%r" % (self.path,)
+                        f"Was unable to delete event for path:{self.path}"
                     )
 
 
@@ -63,5 +63,5 @@ class LockTracker:
         self.locks = {}
 
     def get_path(self, path):
-        logger.debug("Handling lock for path:%s" % (path,))
+        logger.debug(f"Handling lock for path:{path}")
         return PathLockTracker(self, path)

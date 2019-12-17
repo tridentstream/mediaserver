@@ -246,7 +246,7 @@ class StoreService(BaseListingService):
         try:
             search_query_cache = SearchQueryCache.objects.get(query_hash=query_hash)
         except SearchQueryCache.DoesNotExist:
-            logger.info("Trying to list a non-existant query_hash %s" % (query_hash,))
+            logger.info(f"Trying to list a non-existant query_hash {query_hash}")
             return None
 
         searchers = [searcher["searcher"] for searcher in config["searchers"]]
@@ -262,7 +262,7 @@ class StoreService(BaseListingService):
             searchers, query_hash, search_query
         )
 
-        logger.debug("we are at %s - %r" % (trailing_path, config))
+        logger.debug(f"we are at {trailing_path} - {config!r}")
 
         if not trailing_path and "display_name" in config:
             item.id = config["display_name"]

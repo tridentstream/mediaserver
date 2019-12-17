@@ -65,8 +65,7 @@ class RemoteFilesystemView(APIView):
             item = InputPluginManager.get_item(plugin, plugin_path)
 
             logger.info(
-                "Trying to create listing for %r - path:%s - last_modified:%s"
-                % (plugin, plugin_path, if_modified_since)
+                f"Trying to create listing for {plugin!r} - path:{plugin_path} - last_modified:{if_modified_since}"
             )
             item.list(depth=depth)
 
@@ -89,7 +88,7 @@ class RemoteFilesystemView(APIView):
             streamresult = create_stream(item, request)
             return Response(streamresult.serialize(request))
         except:
-            logger.exception("Failed to stream path:%r from %s" % (path, plugin.name))
+            logger.exception(f"Failed to stream path:{path!r} from {plugin.name}")
 
         return Response(
             {"status": "failed", "message": "Unable to properly stream "},

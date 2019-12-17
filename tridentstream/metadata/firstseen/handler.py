@@ -23,7 +23,7 @@ class FirstSeenSerializer(serializers.ModelSerializer):
         return obj.metadata.identifier
 
     def get_metadata_type(self, obj):
-        return "metadata_%s" % obj.metadata.metadata_name
+        return f"metadata_{obj.metadata.metadata_name}"
 
 
 class FirstSeenMetadataHandlerPlugin(LinkingMetadataHandlerPlugin):
@@ -42,7 +42,7 @@ class FirstSeenMetadataHandlerPlugin(LinkingMetadataHandlerPlugin):
         listing_item_root = listing_build.listing_item_root
         linkable_metadata = listing_build.linkable_metadata
 
-        logger.info("Linking with metadata:%r" % (linkable_metadata,))
+        logger.info(f"Linking with metadata:{linkable_metadata!r}")
         for p in linkable_metadata:
             content_type = ContentType.objects.get_for_model(p.model)
 
@@ -62,14 +62,13 @@ class FirstSeenMetadataHandlerPlugin(LinkingMetadataHandlerPlugin):
                 "metadata_id", flat=True
             ).distinct():
                 logger.debug(
-                    "Preparing to create object_id:%r, content_type:%r"
-                    % (metadata_id, content_type)
+                    f"Preparing to create object_id:{metadata_id!r}, content_type:{content_type!r}"
                 )
                 create_objs.append(
                     self.model(object_id=metadata_id, content_type=content_type)
                 )
             self.model.objects.bulk_create(create_objs)
-            logger.debug("Created %i missing objects" % (len(create_objs),))
+            logger.debug(f"Created {len(create_objs)} missing objects")
 
         return super(FirstSeenMetadataHandlerPlugin, self).link_metadata_listingitems(
             listing_build, fetch_metadata

@@ -78,8 +78,7 @@ class RemoteMetadataHandlerPlugin(
                 self.event_queue[identifier] = Event()
             e = self.event_queue[identifier]
             logger.info(
-                "Metadata %s/%s not found in database, waiting for it"
-                % (self.name, identifier)
+                f"Metadata {self.name}/{identifier} not found in database, waiting for it"
             )
             if not e.wait(15):
                 return None
@@ -97,7 +96,7 @@ class RemoteMetadataHandlerPlugin(
         ).data
 
     def get_identifier(self, item):
-        trigger = "metadata:%s:id" % self.plugin_name
+        trigger = f"metadata:{self.plugin_name}:id"
         return item.get(trigger)
 
     def link_metadata_listingitems(self, listing_build, fetch_metadata=True):
@@ -127,14 +126,12 @@ class RemoteMetadataHandlerPlugin(
         for path, item in item_creation_mapping.items():
             listingitem = listingitem_mapping.get(path)
             logger.trace(
-                "Getting identifier from metadata_name:%r path:%r item:%r listingitem:%r"
-                % (self.name, path, item, listingitem)
+                f"Getting identifier from metadata_name:{self.name!r} path:{path!r} item:{item!r} listingitem:{listingitem!r}"
             )
             identifier = self.get_identifier(item)
             if not identifier:
                 logger.trace(
-                    "We found no identifier for path:%r item:%r listingitem:%r"
-                    % (path, item, listingitem)
+                    f"We found no identifier for path:{path!r} item:{item!r} listingitem:{listingitem!r}"
                 )
                 missing_metadata.append((path, item, listingitem))
                 continue
@@ -157,13 +154,12 @@ class RemoteMetadataHandlerPlugin(
                 search_resolve=search_resolve, name__in=names.keys()
             )
 
-            logger.debug("We have %i resolution links" % (len(resolution_links),))
+            logger.debug(f"We have {len(resolution_links)} resolution links")
             missing_resolution_links = {}
             for resolution_link in resolution_links:
                 if resolution_link.name not in names:
                     logger.warning(
-                        "Name %s not found in resolution link query"
-                        % (resolution_link.name,)
+                        f"Name {resolution_link.name} not found in resolution link query"
                     )
                     continue
 
@@ -172,8 +168,7 @@ class RemoteMetadataHandlerPlugin(
                     identifier = resolution_link.metadata.identifier
                     metadata_mapping[path].add(identifier)
                     logger.trace(
-                        "Solving path:%s to identifier:%s using resolution links"
-                        % (path, identifier)
+                        f"Solving path:{path} to identifier:{identifier} using resolution links"
                     )
                     required_metadata.add(identifier)
                     if has_name:
@@ -286,9 +281,9 @@ class RemoteMetadataHandlerPlugin(
         self.listingitem_relinking(listing_item_root, listingitem_metadata_mapping)
 
         if index_writer and self.fulltext_fields:
-            logger.debug("Creating search index for metadata %s" % (self.name,))
+            logger.debug(f"Creating search index for metadata {self.name}")
 
-            obj_type = "metadata_%s__metadata__" % (self.plugin_name,)
+            obj_type = f"metadata_{self.plugin_name}__metadata__"
             last_path, used_searchstr = None, set()
             query = listing_item_root.listingitem_set.filter(
                 Q(
@@ -337,7 +332,7 @@ class RemoteMetadataHandlerPlugin(
             logger.info("Updater lock already locked, bailing")
             return False
 
-        logger.debug("Trying to update metadata for %s" % (self.name,))
+        logger.debug(f"Trying to update metadata for {self.name}")
         with self.currently_updating_lock:
             if self.metadata_resolution_link_model:
                 while not self._do_unload and not reactor._stopped:
@@ -348,7 +343,7 @@ class RemoteMetadataHandlerPlugin(
                         break
                     resolution_link = resolution_links[0]
 
-                    logger.debug("Resolving link %r" % (resolution_link,))
+                    logger.debug(f"Resolving link {resolution_link!r}")
 
                     resolution_link.last_update_status = "updating"
                     resolution_link.save()
@@ -364,13 +359,12 @@ class RemoteMetadataHandlerPlugin(
                         identifier = resolution_link.resolve(config)
                     except:
                         logger.exception(
-                            "Failed to resolve link %r" % (resolution_link,)
+                            f"Failed to resolve link {resolution_link!r}"
                         )
                         resolution_link.last_update_status = "failed"
                     else:
                         logger.debug(
-                            "Successfully resolved link %r to %s"
-                            % (resolution_link, identifier)
+                            f"Successfully resolved link {resolution_link!r} to {identifier}"
                         )
                         resolution_link.last_update_status = "success"
 
@@ -380,8 +374,7 @@ class RemoteMetadataHandlerPlugin(
                                 defaults={"plugin": self._plugin_obj},
                             )
                             logger.debug(
-                                "Got identifier %s, linking all applicable listingitems"
-                                % (identifier,)
+                                f"Got identifier {identifier}, linking all applicable listingitems"
                             )
                             resolution_link.metadata = metadata
 
@@ -401,7 +394,7 @@ class RemoteMetadataHandlerPlugin(
                     break
                 metadata = metadatas[0]
 
-                logger.debug("Populating %r" % metadata)
+                logger.debug(f"Populating {metadata!r}")
 
                 metadata.last_update_status = "updating"
                 metadata.save()
@@ -419,10 +412,10 @@ class RemoteMetadataHandlerPlugin(
                         metadata
                     )
                 except:
-                    logger.exception("Failed to populate metadata %r" % metadata)
+                    logger.exception(f"Failed to populate metadata {metadata!r}")
                     metadata.last_update_status = "failed"
                 else:
-                    logger.debug("Successfully populated metadata %r" % metadata)
+                    logger.debug(f"Successfully populated metadata {metadata!r}")
                     metadata.last_update_status = "success"
 
                 metadata.last_updated = now()

@@ -159,7 +159,7 @@ class MetadataResolutionLink(BaseMetadataResolutionLink):
     )
 
     def resolve(self, config):
-        logger.debug("Resolving using config %r" % (config,))
+        logger.debug(f"Resolving using config {config!r}")
 
         search_strings = self.build_search_strings({})
         if not search_strings:
@@ -170,14 +170,14 @@ class MetadataResolutionLink(BaseMetadataResolutionLink):
         imdb = IMDb()
 
         for title, year in set(search_strings):
-            logger.debug("Resolving using title:%s year:%s" % (title, year))
+            logger.debug(f"Resolving using title:{title} year:{year}")
 
             if self.search_resolve == "tv":
                 metadata = imdb.resolve_tv_show(title, year)
             elif self.search_resolve == "movie":
                 metadata = imdb.resolve_movie(title, year)
             else:
-                logger.warning("Unknown search resolve %s" % (self.search_resolve,))
+                logger.warning(f"Unknown search resolve {self.search_resolve}")
                 continue
 
             if not metadata:

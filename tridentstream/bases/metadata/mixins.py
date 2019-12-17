@@ -56,13 +56,11 @@ class ListingItemRelinkingMixin:
             )
 
             logger.trace(
-                "Comparing existing:%r and expected:%r"
-                % (existing_metadata_ids, metadata_ids)
+                f"Comparing existing:{existing_metadata_ids!r} and expected:{metadata_ids!r}"
             )
             for metadata_id, user_id in existing_metadata_ids - metadata_ids:
                 logger.trace(
-                    "Removing relation between listingitem_id:%s and metadata_id:%s and user_id:%s"
-                    % (listingitem_id, metadata_id, user_id)
+                    f"Removing relation between listingitem_id:{listingitem_id} and metadata_id:{metadata_id} and user_id:{user_id}"
                 )
                 relation = actual_existing_listingitem_relations[
                     (listingitem_id, metadata_id, user_id)
@@ -71,8 +69,7 @@ class ListingItemRelinkingMixin:
 
             for metadata_id, user_id in metadata_ids - existing_metadata_ids:
                 logger.trace(
-                    "Creating relation between listingitem_id:%s and metadata_id:%s and user_id:%s"
-                    % (listingitem_id, metadata_id, user_id)
+                    f"Creating relation between listingitem_id:{listingitem_id} and metadata_id:{metadata_id} and user_id:{user_id}"
                 )
                 create_relations.append(
                     self.listing_item_relation_model(
@@ -82,10 +79,10 @@ class ListingItemRelinkingMixin:
                     )
                 )
 
-        logger.info("Creating %i relations" % (len(create_relations),))
+        logger.info(f"Creating {len(create_relations)} relations")
         self.listing_item_relation_model.objects.bulk_create(create_relations)
 
-        logger.info("Deleting %i relations" % (len(remove_relations),))
+        logger.info(f"Deleting {len(remove_relations)} relations")
         self.listing_item_relation_model.objects.filter(
             pk__in=remove_relations
         ).delete()
@@ -155,8 +152,8 @@ class PopulateMetadataJSONAPIMixin:
     def get_relations(self, user, listingitem_ids):
         prefetch_related = ["metadata"]
         if not self.has_prefetch_related_denormalized():
-            prefetch_related += ["metadata__%s" % x for x in self.prefetch_related]
-        select_related = ["metadata__%s" % x for x in self.select_related]
+            prefetch_related += [f"metadata__{x}" for x in self.prefetch_related]
+        select_related = [f"metadata__{x}" for x in self.select_related]
         relations = (
             self.listing_item_relation_model.objects.filter(
                 listingitem__in=listingitem_ids
@@ -193,7 +190,7 @@ class PopulateMetadataJSONAPIMixin:
 
         jsonapi_obj_mapping = {}  # maps listitem to metadata jsonapi objects
         logger.info(
-            "Seems like we should embed the serialized metadata %s" % (self.name,)
+            f"Seems like we should embed the serialized metadata {self.name}"
         )
 
         has_prefetch_related_denormalized = self.has_prefetch_related_denormalized()
@@ -220,18 +217,12 @@ class PopulateMetadataJSONAPIMixin:
             if not has_update_status or metadata.last_update_status == "success":
                 usable_metadata.append(metadata)
                 logger.trace(
-                    "Serializing a populated metadata entry for %s / %r"
-                    % (metadata.identifier, metadata)
+                    f"Serializing a populated metadata entry for {metadata.identifier} / {metadata!r}"
                 )
             else:
                 empty_metadata.append(metadata)
                 logger.trace(
-                    "Serializing an unpopulated metadata entry for %s / %r / %s"
-                    % (
-                        metadata.identifier,
-                        metadata,
-                        getattr(metadata, "last_update_status", "no-status"),
-                    )
+                    f"Serializing an unpopulated metadata entry for {identifier} / {metadata!r} / {getattr(metadata, 'last_update_status', 'no-status')}"
                 )
 
         all_serialized = self.serializer(
@@ -246,7 +237,7 @@ class PopulateMetadataJSONAPIMixin:
         for metadata, serialized in zip(
             usable_metadata + empty_metadata, all_serialized
         ):
-            identifier = "%s:%s" % (self.plugin_name, metadata.identifier)
+            identifier = f"{self.plugin_name}:{metadata.identifier}"
 
             if self.metadata_embed_method in ["include", "relate"]:
                 metadata.__config__ = self.config
@@ -256,11 +247,11 @@ class PopulateMetadataJSONAPIMixin:
                 obj = {"metadata:%s" % self.plugin_name: serialized}
             else:
                 raise UnknownEmbedMethodException(
-                    "Unknown embed method: %r" % self.metadata_embed_method
+                    f"Unknown embed method: {self.metadata_embed_method!r}"
                 )
 
             jsonapi_obj_mapping[identifier] = obj
-            logger.trace("Created metadata object %s with metadata" % (identifier,))
+            logger.trace(f"Created metadata object {identifier} with metadata")
 
         for listingitem_id, metadatas in relations.items():
             for metadata in metadatas:
@@ -276,21 +267,19 @@ class PopulateMetadataJSONAPIMixin:
                         )
                         jsonapi_obj_mapping[identifier] = obj
                         logger.trace(
-                            "Created metadata object %s without metadata"
-                            % (identifier,)
+                            f"Created metadata object {identifier} without metadata"
                         )
 
                     local = self.metadata_embed_method == "relate"
                     logger.trace(
-                        "Added relationship between listingitem_id:%s metadata_identifier:%s"
-                        % (listingitem_id, identifier)
+                        f"Added relationship between listingitem_id:{listingitem_id} metadata_identifier:{identifier}"
                     )
                     items[listingitem_id].add_relationship(
                         obj_type, jsonapi_obj_mapping[identifier], local=local
                     )
                 else:
                     raise UnknownEmbedMethodException(
-                        "Unknown embed method: %r" % (self.metadata_embed_method,)
+                        f"Unknown embed method: {self.metadata_embed_method!r}"
                     )
 
     def get_prefetch_related_denormalized(self, metadata):
@@ -331,7 +320,7 @@ class PopulateMetadataJSONAPIMixin:
             )
             metadata.save()
             logger.trace(
-                "Updated Prefetch Related Denormalized Cache for %r" % (metadata,)
+                f"Updated Prefetch Related Denormalized Cache for {metadata!r}"
             )
 
 
@@ -346,7 +335,7 @@ class GetMetadataStatsMixin:
             for result in self.model.objects.values("last_update_status").annotate(
                 Count("last_update_status")
             ):
-                k = "Model update status: %s" % (result["last_update_status"],)
+                k = f"Model update status: {result['last_update_status']}"
                 stats.append({"title": k, "value": result["last_update_status__count"]})
 
         if self.metadata_resolution_link_model and issubclass(
@@ -355,7 +344,7 @@ class GetMetadataStatsMixin:
             for result in self.metadata_resolution_link_model.objects.values(
                 "last_update_status"
             ).annotate(Count("last_update_status")):
-                k = "Resolution update status: %s" % (result["last_update_status"],)
+                k = f"Resolution update status: {result['last_update_status']}"
                 stats.append({"title": k, "value": result["last_update_status__count"]})
 
             m = self.metadata_resolution_link_model.objects.filter(
@@ -390,7 +379,7 @@ class ResetFailedMixin:
             return
 
         logger.debug(
-            "Requeuing failed for plugin %s/%s" % (self.plugin_name, self.name)
+            f"Requeuing failed for plugin {self.plugin_name}/{self.name}"
         )
         self.model.objects.filter(
             last_update_status=BaseUpdatable.UPDATE_STATUS_FAILED
@@ -414,8 +403,7 @@ class ResetFailedMixin:
             return
 
         logger.debug(
-            "Wiping all failed search resolves for resolver %s plugin %s/%s"
-            % (search_resolve, self.plugin_name, self.name)
+            f"Wiping all failed search resolves for resolver {search_resolve} plugin {self.plugin_name}/{self.name}"
         )
         self.metadata_resolution_link_model.objects.filter(
             search_resolve=search_resolve, metadata__isnull=True

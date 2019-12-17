@@ -38,20 +38,19 @@ Install the plugin
 
 After you have installed it, check out the plugin README to figure out what the app is called.
 
-In this example, we'll say the READ says the app is named `my_plugin`. Open up .env local_settings.py and find `INSTALLED_APPS`.
+In this example, we'll say the README says the app is named `my_plugin`. Open up .env local_settings.py and find `INSTALLED_APPS`.
 The result should look something like this
 
 .. code-block:: python
 
     INSTALLED_APPS=my_plugin,another_plugin
 
-Restart Tridentstream Media Server and you can find your newly installed plugin in the admin interface.
+After you restart Tridentstream Media Server you can find your newly installed plugin in the admin interface.
 
 Organizing Data
 `````````````````````````````````
 
 Tridentstream Media Server relies on your data being structured with the same hieracy for all of the same type.
-
 
 By forcing such expectations of the data options are opened for making a different type of plugins
 from what other streaming solutions can do. E.g. you won't need to do everything through the filesystem.
@@ -76,9 +75,10 @@ There is currently only one supported streaming torrent client, `Deluge-Streamin
 So, get Deluge running and install the Deluge-Streaming plugin.
 
 * In the plugin configuration, enable "Allow remote control"
-* Add a "bittorrentclient" / "deluge" plugin to Tridentstream Media Server admin
-* Copy the relevant information and save
-* Enable the plugin if it isn't enabled
+* Add Deluge plugin under "Other plugins"
+* Fill in the relevant information and save
+
+You can now use the Torrent client in searchers.
 
 Searchers
 `````````````````````````````````
@@ -95,11 +95,13 @@ Sharing Data
 Sharing data with friends and family is both fun and giving. It is also a feature that is front and center in Tridentstream.
 
 It is possible to share local data, others data and even your searchers.
-Don't worry, when sharing your searchers the receiving party can only see the releases and stream them, no secret information is leaked.
+Don't worry, when sharing your searchers the receiving party can only see the names and stream them, no secret information should be leaked.
 
-If you want to share local data, then add a rfs (remote file system) plugin and select all the inputs you want to share.
+If you want to share local data, enable them under "Remote filesystems".
 
-If you want to share a searcher, then add a remote searcher and select all the searchers you want to share.
+If you want to share a searcher, enable them under "Remote searchers".
+
+To allow a user to use the remote searcher, go under Users and give them access to the correct plugin.
 
 Frequently Asked Questions
 ---------------------------------
@@ -110,7 +112,7 @@ What does "Stream" mean in the webinterface.
 
 
 The frontpage on the webinterface looks weird / empty / I want it changed.
-    I'm not sure what to do exactly about the front page. It can be customized to do about anything.
+    I'm not sure what to do exactly about the front page. It can (technically) be customized to do about anything.
 
 
 How do I trigger a rescan externally?
@@ -122,13 +124,9 @@ How do I trigger a rescan externally?
 
 Can video be transcoded / subs added / any modifications?
     Not yet, so far there is only a demo project that does this and not a full-blown plugin.
-    The problem is that I don't like the models Plex and Emby uses.
+    The problem is that I don't like the models Plex and Jellyfin uses.
 
-    The Plex model seem to require specialized player and the Emby just re-encodes the video to HLS to align keyframes
+    The Plex model seem to require specialized player and the Jellyfin just re-encodes the video to HLS to align keyframes
     (These things might not be true anymore but I doubt they went with the model I like). So I have to make my own.
 
-    My solution is to make a "fake" mkv or mp4 file that is being filled with actual data as the player seek or read.
-    That way it will look like a real file, work in any video player and still allow seeking. To me, that's the best
-    of both worlds.
-
-    If you have heard of anyone who did this already, then hook me up!
+    If there's a pluggable solution, then do raise an issue.

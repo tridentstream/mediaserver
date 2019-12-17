@@ -43,12 +43,12 @@ class RemoteFilesystemInputPlugin(InputPlugin):
     def __init__(self, config):
         self.config = config
 
-        self.route_input_rfs_list = "input_rfs_list_%s" % (self.name,)
+        self.route_input_rfs_list = f"input_rfs_list_{self.name}"
         router.register_handler(
             self.route_input_rfs_list, self.thomas_list, False, True, False
         )
 
-        self.route_input_rfs_stream = "input_rfs_stream_%s" % (self.name,)
+        self.route_input_rfs_stream = f"input_rfs_stream_{self.name}"
         router.register_handler(
             self.route_input_rfs_stream, self.thomas_stream, False, False, True
         )
@@ -58,7 +58,7 @@ class RemoteFilesystemInputPlugin(InputPlugin):
         router.unregister_handler(self.route_input_rfs_stream)
 
     def get_headers(self):
-        return {"Authorization": "Token %s" % (self.config["token"],)}
+        return {"Authorization": f"Token {self.config['token']}"}
 
     def get_item(self, path):
         item = Item(id=path.strip().split("/")[-1], router=router)
@@ -76,7 +76,7 @@ class RemoteFilesystemInputPlugin(InputPlugin):
     def add_routes(self, item, path, skip=False):
         if not skip:
             if path:
-                path = "%s/%s" % (path, item.id)
+                path = f"{path}/{item.id}"
             else:
                 path = item.id
 
@@ -95,7 +95,7 @@ class RemoteFilesystemInputPlugin(InputPlugin):
                 )
 
     def thomas_list(self, item, path, depth=0, modified_since=None):
-        logger.info("Listing path %r with depth %s" % (path, depth))
+        logger.info(f"Listing path {path!r} with depth {depth}")
         item_id = item.id
         headers = self.get_headers()
         if modified_since:
@@ -120,16 +120,15 @@ class RemoteFilesystemInputPlugin(InputPlugin):
             raise PathNotFoundException()
         else:
             logger.warning(
-                "Unknown status code %s while listing %s/%s"
-                % (r.status_code, self.name, path)
+                f"Unknown status code {r.status_code} while listing {self.name}/{path}"
             )
 
     def thomas_stream(self, item, path):
-        logger.info("Trying to stream %r" % path)
+        logger.info(f"Trying to stream {path!r}")
         return RemoteFilesystemStreamer(self, path)
 
     def stream(self, path):
-        logger.info("Trying to stream %r" % (path,))
+        logger.info(f"Trying to stream {path!r}")
         headers = self.get_headers()
         r = requests.post(
             urljoin(self.config["url"].strip("/") + "/", path), headers=headers

@@ -18,7 +18,7 @@ websession_locktracker = LockTracker()
 class WebSessionManager(models.Manager):
     @contextmanager
     def get_session(self, app):
-        logger.debug("Getting requests session for %s" % (app,))
+        logger.debug(f"Getting requests session for {app}")
         with websession_locktracker.get_path(app):
             session = requests.Session()
             try:

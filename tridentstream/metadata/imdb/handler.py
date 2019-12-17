@@ -61,5 +61,5 @@ class IMDBMetadataHandlerPlugin(RemoteMetadataHandlerPlugin):
     def __traits__(self):
         traits = ["primary_metadata"]
         if self.config.get("search_resolve"):
-            traits.append("metadata_%s" % (self.config["search_resolve"],))
+            traits.append(f"metadata_{self.config['search_resolve']}")
         return traits

@@ -72,7 +72,7 @@ class BaseMetadata(BaseUpdatable):
 
         metadata_server = self.__config__["metadata_server"]
         return reverse(
-            "unplugged:%s:metadata" % (metadata_server.name,),
+            f"unplugged:{metadata_server.name}:metadata",
             kwargs={
                 "metadata_handler": self.metadata_name,
                 "identifier": self.identifier,
@@ -86,7 +86,7 @@ class BaseMetadata(BaseUpdatable):
         abstract = True
 
     def __str__(self):
-        return "%s in %s" % (self.identifier, self.__class__.__name__)
+        return f"{self.identifier} in {self.__class__.__name__}"
 
 
 class BaseListingItemRelation(models.Model):

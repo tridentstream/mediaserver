@@ -21,8 +21,7 @@ bootstrap-tridentstream
 # load extra fixtures
 if [ -d "fixtures" ]; then
     for filename in fixtures/*.json; do
-        python manage.py loaddata "$filename"
-        mv "$filename" "$filename.loaded"
+        python manage.py loaddata "$filename" && mv "$filename" "$filename.loaded"
     done
 fi
 

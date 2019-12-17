@@ -103,7 +103,7 @@ class WebinterfaceServicePlugin(ServicePlugin):
 
         config_plugin = config.get("config")
         if config_plugin:
-            namespace = "%s:%s" % (self.plugin_type, self.name)
+            namespace = f"{self.plugin_type}:{self.name}"
             key = "frontpage_listings"
             config_plugin.set_default_config(
                 "system", namespace, key, self.default_config

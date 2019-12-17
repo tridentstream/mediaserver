@@ -49,7 +49,7 @@ class RemoteSearcherSearcher(URLSearcherPluginBase):
         return urljoin(self.config["url"], self.config["searcher_name"])
 
     def get_headers(self):
-        return {"Authorization": "Token %s" % (self.config["token"],)}
+        return {"Authorization": f"Token {self.config['token']}"}
 
     def do_query(self, session, url, query):
         return session.get(
@@ -73,7 +73,7 @@ class RemoteSearcherSearcher(URLSearcherPluginBase):
     def add_expand_routes(self, item, search_token, url, path="", skip=False):
         if not skip:
             if path:
-                path = "%s/%s" % (path, item.id)
+                path = f"{path}/{item.id}"
             else:
                 path = item.id
 
@@ -102,7 +102,7 @@ class RemoteSearcherSearcher(URLSearcherPluginBase):
 
     @property
     def filters(self):
-        cache_key = "searcher:filters:%s" % self.name
+        cache_key = f"searcher:filters:{self.name}"
         cache_result = cache.get(cache_key)
         if not cache_result:
             r = requests.get(self.config["url"], headers=self.get_headers())

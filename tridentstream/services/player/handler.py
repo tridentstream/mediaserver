@@ -29,7 +29,6 @@ class PlayerServicePlugin(ServicePlugin):
 
     def get_channels(self):
         return [
-            # path('', inject_into_scope(PlayerConsumer, {'service': self})),
             ("", inject_into_scope(PlayerConsumer, {"service": self}))
         ]
 
@@ -47,7 +46,7 @@ class PlayerServicePlugin(ServicePlugin):
 
     def play(self, payload, viewstate, player_id):
         logger.debug(
-            "Sending play to player_id:%r user:%r" % (player_id, viewstate.user)
+            f"Sending play to player_id:{player_id} user:{viewstate.user!r}"
         )
         player_coordinator = self.get_player_coordinator(viewstate.user)
 
@@ -80,34 +79,33 @@ class Player:
     ):  # we need to viewstate_id something
         if state != self.state:
             logger.debug(
-                "Main state changed for %s from %s to %s, clearing values"
-                % (self.player_id, self.state, state)
+                f"Main state changed for {self.player_id} from {self.state} to {state}, clearing values"
             )
             self.values = {}
 
         self.state = state
         self.values.update(values)
         if values and self.viewstate is not None and self.viewstate.id == viewstate_id:
-            logger.debug("Updating viewstate %s" % (viewstate_id,))
+            logger.debug(f"Updating viewstate {viewstate_id}")
             self.viewstate.update(values)
 
         self.publish_state()
 
     def request_state(self, state, values):
         logger.debug(
-            "Requesting state on id:%s %s/%r" % (self.player_id, state, values)
+            f"Requesting state on id:{self.player_id} {state}/{values!r}"
         )
         self.command("request_state", state, values)
 
     def connect_viewstate(self, viewstate):
         logger.debug(
-            "Connected player %s with viewstate %s" % (self.player_id, viewstate.id)
+            f"Connected player {self.player_id} with viewstate {viewstate.id}"
         )
         self.viewstate = viewstate
         self.viewstate.player_connected = True
 
     def close(self):
-        logger.debug("Closing connection to player_id:%r" % (self.player_id,))
+        logger.debug(f"Closing connection to player_id:{self.player_id}")
         self.websocket.close()
 
     def serialize(self):
@@ -141,7 +139,7 @@ class PlayerCoordinator:
     def remove_player(self, player_id):
         player = self.players.pop(player_id, None)
         if player:
-            logger.debug("Player %s gone" % (player_id,))
+            logger.debug(f"Player {player_id} gone")
             player.close()
 
     def get_player(self, player_id):
