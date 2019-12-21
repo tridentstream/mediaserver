@@ -222,7 +222,7 @@ class PopulateMetadataJSONAPIMixin:
             else:
                 empty_metadata.append(metadata)
                 logger.trace(
-                    f"Serializing an unpopulated metadata entry for {identifier} / {metadata!r} / {getattr(metadata, 'last_update_status', 'no-status')}"
+                    f"Serializing an unpopulated metadata entry for {metadata.identifier} / {metadata!r} / {getattr(metadata, 'last_update_status', 'no-status')}"
                 )
 
         all_serialized = self.serializer(
