@@ -158,7 +158,6 @@ class ServiceMaker(object):
 
         django.setup()
         application = get_default_application()
-        print(application)
 
         if options["reverseproxy"] == "on":
             asgiresource = ASGIResource(
