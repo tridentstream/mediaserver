@@ -5,6 +5,7 @@ from datetime import timedelta
 
 from django.utils.timezone import now
 from thomas import Item
+from unplugged import command
 
 from ...exceptions import PathNotFoundException
 from ...plugins import SearcherFilter
@@ -268,6 +269,14 @@ class TorrentMixin:
 
 class CacheSearchMixin:
     search_result_cache_time = timedelta(minutes=15)
+
+    @command(
+        name="clear_listing_cache",
+        display_name="Clear listing caches",
+        description="Removes listing caches for this plugin and forces a rebuild. This can break exisiting nested listings",
+    )
+    def clear_listing_cache(self):
+        ListingCache.objects.filter(app=self.name).delete()
 
     def get_cache_results(self, search_token, path):
         try:
