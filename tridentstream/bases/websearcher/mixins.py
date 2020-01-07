@@ -3,7 +3,9 @@ import logging
 from contextlib import contextmanager
 from datetime import timedelta
 
+from asgiref.sync import async_to_sync
 from django.utils.timezone import now
+from magnet2torrent import Magnet2Torrent, FailedToFetchException as FailedToFetchTorrentException
 from thomas import Item
 from unplugged import command
 
@@ -183,18 +185,27 @@ class TorrentMixin:
         try:
             tf = TorrentFile.objects.get(app=self.name, url_hash=url_hash)
         except TorrentFile.DoesNotExist:
-            try:
-                with self.get_session() as session:
-                    r = self.fetch_torrent_data(session, url)
-            except:
-                logger.exception("Failed to fetch torrent")
-                raise PathNotFoundException()
-            if r.status_code != 200:
-                self.last_failure = now()
-                raise PathNotFoundException()
+            if url.startswith('magnet'):
+                m2t = Magnet2Torrent(url)
+                try:
+                    filename, torrent_data = async_to_sync(m2t.retrieve_torrent)()
+                except FailedToFetchTorrentException:
+                    logger.exception("Failed to fetch magnet link")
+                    raise PathNotFoundException()
+            else:
+                try:
+                    with self.get_session() as session:
+                        r = self.fetch_torrent_data(session, url)
+                except:
+                    logger.exception("Failed to fetch torrent")
+                    raise PathNotFoundException()
+                if r.status_code != 200:
+                    self.last_failure = now()
+                    raise PathNotFoundException()
+                torrent_data = r.content
 
             tf = TorrentFile.objects.create(
-                app=self.name, url_hash=url_hash, url=url, torrent_data=r.content
+                app=self.name, url_hash=url_hash, url=url, torrent_data=torrent_data
             )
 
         return tf
