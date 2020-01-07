@@ -76,7 +76,7 @@ class AvailableMetadataHandlerPlugin(
                 )
 
                 availability_mapping.setdefault(availability["app"], {}).setdefault(
-                    availability["identifier"], []
+                    str(availability["identifier"]), []
                 ).append(listingitem)
 
         ListingItemAvailability.objects.bulk_create(objs)
@@ -126,7 +126,7 @@ class AvailableMetadataHandlerPlugin(
             for availability in item.get("metadata:availability", []):
                 availability_to_item_mapping.setdefault(
                     availability["app"], {}
-                ).setdefault(availability["identifier"], []).append(item)
+                ).setdefault(str(availability["identifier"]), []).append(item)
 
             if item.is_expanded:
                 for sub_item in item.list():
