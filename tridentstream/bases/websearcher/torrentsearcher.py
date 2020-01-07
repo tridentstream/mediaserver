@@ -74,8 +74,8 @@ class URLSearcherPluginBase(
 
         return item
 
-    def do_query(self, session, url, query):
-        return session.get(self.build_url(url, query))
+    def do_query(self, session, url, query, headers=None):
+        return session.get(self.build_url(url, query), headers=headers)
 
     def add_cache_list_routes(self, item, search_token, root_path, path="", skip=False):
         if path:
