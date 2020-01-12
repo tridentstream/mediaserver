@@ -27,3 +27,6 @@ Another important part for me is to not add any GPL or other restrictively licen
    * - subliminal
      - GPL Infected (pysrt)
      - `Link <https://github.com/Diaoul/subliminal>`__
+   * - PyAV
+     - Embedded GPL - FFmpeg linked
+     - `Link <https://github.com/mikeboers/PyAV>`__
