@@ -10,7 +10,7 @@ pip install -r requirements.txt
 
 # install plugins
 if [ -d "packages" ]; then
-    for filename in packages/*.tar.gz; do
+    for filename in packages/*.{tar.gz,zip,whl}; do
         pip install "$filename"
     done
 fi
