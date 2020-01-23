@@ -19,11 +19,6 @@ from twisted.plugin import IPlugin
 from twisted.python import log, usage
 from twisted.web import resource, server
 
-# TODO: Remove - there is a runaway thread problem in Channels
-# that is basically a memory leak. Anything memory heavy should probably be
-# manually managed thread-wise.
-os.environ["ASGI_THREADS"] = "8"
-
 os.environ["DJANGO_SETTINGS_MODULE"] = "main.settings"
 
 logger = logging.getLogger(__name__)
@@ -109,6 +104,11 @@ class ServiceMaker(object):
 
         import urllib3  # TODO: remove this code again, not sure why it doesn't just fix it by itself.
         urllib3.disable_warnings()
+
+        from tridentstream.timeoutthreadpoolexecutor import TimeoutThreadPoolExecutor
+        loop = asyncio.get_event_loop()
+        ttpe = TimeoutThreadPoolExecutor()
+        loop.set_default_executor(ttpe)
 
         if options["djangodebug"]:
             os.environ["DJANGO_DEBUG"] = "1"
