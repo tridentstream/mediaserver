@@ -1,3 +1,7 @@
+from timeoutthreadpoolexecutor import TimeoutThreadPoolExecutor
+from concurrent.futures import thread
+thread.ThreadPoolExecutor = TimeoutThreadPoolExecutor
+
 import asyncio
 import logging
 import logging.handlers
@@ -104,11 +108,6 @@ class ServiceMaker(object):
 
         import urllib3  # TODO: remove this code again, not sure why it doesn't just fix it by itself.
         urllib3.disable_warnings()
-
-        from tridentstream.timeoutthreadpoolexecutor import TimeoutThreadPoolExecutor
-        loop = asyncio.get_event_loop()
-        ttpe = TimeoutThreadPoolExecutor()
-        loop.set_default_executor(ttpe)
 
         if options["djangodebug"]:
             os.environ["DJANGO_DEBUG"] = "1"
