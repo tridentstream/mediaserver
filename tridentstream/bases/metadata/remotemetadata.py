@@ -9,8 +9,9 @@ from django.db import transaction
 from django.db.models import Q
 from django.utils.timezone import now
 from rest_framework import serializers
+from unplugged import threadify
 
-from twisted.internet import reactor, threads
+from twisted.internet import reactor
 
 from ...plugins import MetadataHandlerPlugin
 from .mixins import (
@@ -324,7 +325,7 @@ class RemoteMetadataHandlerPlugin(
         self.update_request()
 
     def update_request(self, *args):
-        reactor.callFromThread(threads.deferToThread, self.update)
+        threadify(self.update)()
 
     def update(self):
         """Check for metadata to update"""

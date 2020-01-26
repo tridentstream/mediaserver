@@ -3,9 +3,9 @@ import logging
 import time
 from abc import abstractmethod, abstractproperty
 
-from unplugged import PluginBase
+from unplugged import PluginBase, threadify
 
-from twisted.internet import defer, reactor, threads
+from twisted.internet import reactor
 
 from ..utils import hash_string
 
@@ -135,32 +135,21 @@ class SearcherPluginManager:
 
     @staticmethod
     def filters_multiple(plugins):
-        @defer.inlineCallbacks
-        def filters_handler(plugins):
+        threads = []
+        for plugin in plugins:
             def get_filters(plugin):
                 return plugin.filters
+            threads.append((plugin, threadify(get_filters, cache_result=True)(plugin)))
 
-            defers = [
-                (plugin, threads.deferToThread(get_filters, plugin))
-                for plugin in plugins
-            ]
+        retval = None
+        for plugin, thread in threads:
+            filters = thread()
+            if not filters:
+                continue
 
-            retval = None
-            for plugin, d in defers:
-                try:
-                    filters = yield d
-                    if not filters:
-                        continue
+            if retval is None:
+                retval = filters
+            else:
+                retval.merge(filters)
 
-                except:
-                    logger.exception(f"Failed to get filter {plugin.name}")
-                    continue
-
-                if retval is None:
-                    retval = filters
-                else:
-                    retval.merge(filters)
-
-            defer.returnValue(retval)
-
-        return threads.blockingCallFromThread(reactor, filters_handler, plugins)
+        return retval

@@ -11,14 +11,14 @@ import time
 
 import daphne.server
 import django
-from apscheduler.schedulers.twisted import TwistedScheduler
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from channels.routing import get_default_application
 from txasgiresource import ASGIResource
 from zope.interface import implementer
 
 from twisted.application import service
 from twisted.application.service import IServiceMaker
-from twisted.internet import defer, endpoints, reactor, threads
+from twisted.internet import endpoints, reactor
 from twisted.plugin import IPlugin
 from twisted.python import log, usage
 from twisted.web import resource, server
@@ -70,19 +70,17 @@ class ASGIService(service.Service):
         self.resource = resource
         self.description = description
 
-    @defer.inlineCallbacks
     def startService(self):
-        self.endpoint = yield endpoints.serverFromString(reactor, self.description)
+        self.endpoint = endpoints.serverFromString(reactor, self.description)
         self.endpoint.listen(self.site)
 
-    @defer.inlineCallbacks
     def stopService(self):
-        yield self.resource.stop()
+        self.resource.stop()
 
 
 class SchedulerService(service.Service):
     def __init__(self):
-        self.scheduler = TwistedScheduler()
+        self.scheduler = AsyncIOScheduler()
 
     def startService(self):
         self.scheduler.start()
@@ -120,7 +118,6 @@ class ServiceMaker(object):
             log_level = TRACE_LEVEL_NUM
             asyncio.set_event_loop(reactor._asyncioEventloop)
             asyncio.get_event_loop().set_debug(True)
-            defer.setDebugging(True)
         elif options["debug"]:
             log_level = logging.DEBUG
         else:
@@ -190,24 +187,28 @@ class ServiceMaker(object):
         multi.addService(scheduler_service)
         settings.SCHEDULER = scheduler_service.scheduler
 
+        loop = asyncio.get_event_loop()
+
         def initialize():
             from unplugged.bootstrap import bootstrap_all
 
             bootstrap_all()
 
-        reactor.callLater(0, threads.deferToThread, initialize)
+        loop.run_in_executor(None, initialize)
 
         # Django doesn't seem to want to kill connections
-        def cleanup_database_connections():
+        async def cleanup_database_connections():
             def cleanup_thread():
                 from django.db import close_old_connections
 
                 close_old_connections()
 
-            threads.deferToThread(cleanup_thread)
-            reactor.callLater(60 * 15, cleanup_database_connections)
+            while True:
+                loop = asyncio.get_event_loop()
+                loop.run_in_executor(None, cleanup_thread)
+                await asyncio.sleep(60 * 15)
 
-        cleanup_database_connections()
+        asyncio.ensure_future(cleanup_database_connections())
 
         return multi
 

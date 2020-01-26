@@ -9,10 +9,10 @@ from urllib.parse import urljoin
 import pytz
 from django.conf import settings
 from thomas import router
-from unplugged import RelatedPluginField, Schema, command, fields
+from unplugged import RelatedPluginField, Schema, command, fields, threadify
 from unplugged.models import Log
 
-from twisted.internet import defer, reactor, threads
+from twisted.internet import defer, reactor
 
 from ...exceptions import NotModifiedException, PathNotFoundException
 from ...plugins import (
@@ -232,17 +232,16 @@ class FilesystemInputPlugin(InputPlugin):
             return self.vfs.list_file(path)
 
     def rescan(self, update_all_metadata=False):
-        reactor.callLater(0, self._rescan, update_all_metadata)
+        threadify(self._rescan)(update_all_metadata)
         return "Rescanning"
 
-    @defer.inlineCallbacks
     def _rescan(self, update_all_metadata=False):
         """
         Rescans filesystem for files
         """
         if self.is_rescanning:
             logger.warning("Already rescanning")
-            defer.returnValue(None)
+            return None
 
         notification = Notification(
             f"admin.{self.plugin_name}.{self.name}.rescan",
@@ -253,7 +252,7 @@ class FilesystemInputPlugin(InputPlugin):
         )
         notification_start_dt = datetime.now()
         if self.notifier:
-            reactor.callInThread(self.notifier.notify, notification)
+            self.notifier.notify(notification)
 
         with Log.objects.start_chain(self, "INPUT.RESCAN") as log:
             log.log(
@@ -363,23 +362,23 @@ class FilesystemInputPlugin(InputPlugin):
 
                 logger.info("Done scanning all paths.")
 
-            d = threads.deferToThread(insert_into_vfs, self.vfs, queue, len(self.paths))
+            t = threadify(insert_into_vfs, cache_result=True)(self.vfs, queue, len(self.paths))
 
             prefixes = set(p[0] for p in self.paths if p[0])
             if prefixes:
                 queue.put((QueueCommand.ENSURE_PREFIXES, prefixes))
 
             for virtual_path, path in self.paths:
-                threads.deferToThread(walk_path, queue, virtual_path, path)
+                threadify(walk_path)(queue, virtual_path, path)
 
-            yield d
+            t()
 
             delta = datetime.now() - notification_start_dt
             if self.notifier:
                 notification = notification.copy(
                     body=f"Finished rescanning, it took {delta}"
                 )
-                reactor.callInThread(self.notifier.notify, notification)
+                self.notifier.notify(notification)
 
             log.log(100, f"A rescan finished after {delta}")
 

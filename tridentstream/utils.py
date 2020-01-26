@@ -1,6 +1,7 @@
 import hashlib
 import os
 import posixpath
+import time
 from urllib.parse import urljoin as _urljoin
 
 from django.http import Http404, HttpResponse, HttpResponseNotModified

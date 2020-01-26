@@ -1,11 +1,12 @@
 import logging
+import time
 import threading
 
-from django.conf import settings
-from unplugged import ServicePlugin, command
-from unplugged.models import Schedule
+from functools import partial
 
-from twisted.internet import reactor, threads
+from django.conf import settings
+from unplugged import ServicePlugin, command, threadify
+from unplugged.models import Schedule
 
 from .listingbuilder import ListingBuilder
 from .models import ListingItem
@@ -24,13 +25,9 @@ class BaseListingService(ServicePlugin):
         self.automatic_rebuild_lock = threading.Lock()
 
         if self.can_automatically_rebuild:
-            reactor.callFromThread(
-                reactor.callLater,
-                1,
-                threads.deferToThread,
-                self.schedule_automatic_rebuild,
-            )
-            reactor.callFromThread(reactor.callLater, 30, self.rebuild_request)
+            # TODO: should run after bootstrap
+            threadify(self.schedule_automatic_rebuild, delay=3)()
+            threadify(self.rebuild_listings, delay=30)()
 
     def get_section(self, section_name):
         for section in self.config.get("sections", []):
@@ -104,23 +101,16 @@ class BaseListingService(ServicePlugin):
     # if queued, do not build
     # if queued the last 10 seconds, do not build
     def rebuild_listing(self, config, path, delay=False):
-        reactor.callFromThread(
-            reactor.callLater,
-            delay and 3.0 or 0,
-            threads.deferToThread,
-            self.listing_builder.get_listing,
+        threadify(self.listing_builder.get_listing, delay=delay and 3.0 or 0)(
             config,
             path,
-            use_background_recheck=False,
+            use_background_recheck=False
         )
 
     def unload(self):
         self._do_unload = True
 
         super().unload()
-
-    def rebuild_request(self, *args):
-        reactor.callFromThread(threads.deferToThread, self.rebuild_listings)
 
     def get_path_config(self, path):
         """
