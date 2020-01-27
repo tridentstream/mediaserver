@@ -18,7 +18,7 @@ setup(
     author='Anders Jensen',
     author_email='johndoee@tridentstream.org',
     description='Media Streaming Server',
-    long_description="TODO",
+    long_description=readme(),
     long_description_content_type="text/x-rst",
     license='MIT',
     packages=find_packages(exclude=EXCLUDE_FROM_PACKAGES) + ['twisted.plugins'],
