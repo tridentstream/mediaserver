@@ -8,6 +8,8 @@ Version 1.0.2 (Unreleased)
 * Added: Support for magnet torrent link
 * Added: Clear listing cache button on admin interface for searchers
 
+* Changed: Removed various thread systems to control them better
+
 * Bugfix: Availability errors out when it is not a string
 
 
