@@ -2,7 +2,7 @@
 Changelog
 ================================
 
-Version 1.0.2 (Unreleased)
+Version 1.0.3 (27-01-2020)
 --------------------------------
 
 * Added: Support for magnet torrent link
@@ -12,6 +12,10 @@ Version 1.0.2 (Unreleased)
 
 * Bugfix: Availability errors out when it is not a string
 
+Version 1.0.2 ()
+--------------------------------
+
+* Folded into 1.0.3
 
 Version 1.0.1 (21-12-2019)
 --------------------------------

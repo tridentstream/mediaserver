@@ -7,6 +7,9 @@ from tridentstream import __version__
 
 EXCLUDE_FROM_PACKAGES = ['tridentstream.bin']
 
+def readme():
+    with open("README.rst") as f:
+        return f.read()
 
 setup(
     name='tridentstream',
@@ -16,6 +19,7 @@ setup(
     author_email='johndoee@tridentstream.org',
     description='Media Streaming Server',
     long_description="TODO",
+    long_description_content_type="text/x-rst",
     license='MIT',
     packages=find_packages(exclude=EXCLUDE_FROM_PACKAGES) + ['twisted.plugins'],
     scripts=[
