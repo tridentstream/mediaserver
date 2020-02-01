@@ -187,28 +187,27 @@ class ServiceMaker(object):
         multi.addService(scheduler_service)
         settings.SCHEDULER = scheduler_service.scheduler
 
-        loop = asyncio.get_event_loop()
-
         def initialize():
-            from unplugged.bootstrap import bootstrap_all
+            def _initialize():
+                from unplugged.bootstrap import bootstrap_all
 
-            bootstrap_all()
+                bootstrap_all()
 
-        loop.run_in_executor(None, initialize)
+            loop = asyncio.get_running_loop()
+            asyncio.ensure_future(loop.run_in_executor(None, _initialize))
+
+        reactor.callLater(0, initialize)
 
         # Django doesn't seem to want to kill connections
-        async def cleanup_database_connections():
+        def cleanup_database_connections():
             def cleanup_thread():
                 from django.db import close_old_connections
 
                 close_old_connections()
 
-            while True:
-                loop = asyncio.get_event_loop()
-                loop.run_in_executor(None, cleanup_thread)
-                await asyncio.sleep(60 * 15)
+            settings.SCHEDULER.add_job(cleanup_thread, 'interval', minutes=15)
 
-        asyncio.ensure_future(cleanup_database_connections())
+        reactor.callLater(0, cleanup_database_connections)
 
         return multi
 
