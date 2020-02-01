@@ -10,6 +10,7 @@ RUN pip install -r /requirements.txt
 RUN mkdir /code
 COPY setup.py /code/
 COPY MANIFEST.in /code/
+COPY README.rst /code/
 COPY main/ /code/main/
 COPY tridentstream/ /code/tridentstream/
 COPY twisted/ /code/twisted/
