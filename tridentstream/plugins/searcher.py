@@ -137,8 +137,10 @@ class SearcherPluginManager:
     def filters_multiple(plugins):
         threads = []
         for plugin in plugins:
+
             def get_filters(plugin):
                 return plugin.filters
+
             threads.append((plugin, threadify(get_filters, cache_result=True)(plugin)))
 
         retval = None

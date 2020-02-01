@@ -1,6 +1,7 @@
-from timeoutthreadpoolexecutor import TimeoutThreadPoolExecutor
-from concurrent.futures import thread
-thread.ThreadPoolExecutor = TimeoutThreadPoolExecutor
+from timeoutthreadpoolexecutor import TimeoutThreadPoolExecutor  # isort:skip
+from concurrent.futures import thread  # isort:skip
+
+thread.ThreadPoolExecutor = TimeoutThreadPoolExecutor  # isort:skip
 
 import asyncio
 import logging
@@ -105,6 +106,7 @@ class ServiceMaker(object):
         logging.Logger.trace = trace
 
         import urllib3  # TODO: remove this code again, not sure why it doesn't just fix it by itself.
+
         urllib3.disable_warnings()
 
         if options["djangodebug"]:
@@ -205,7 +207,7 @@ class ServiceMaker(object):
 
                 close_old_connections()
 
-            settings.SCHEDULER.add_job(cleanup_thread, 'interval', minutes=15)
+            settings.SCHEDULER.add_job(cleanup_thread, "interval", minutes=15)
 
         reactor.callLater(0, cleanup_database_connections)
 

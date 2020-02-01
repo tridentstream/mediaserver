@@ -293,7 +293,7 @@ class RemoteMetadataHandlerPlugin(
                 )
                 | Q(
                     path__in=existing_listing_items.keys(),
-                    **{obj_type + "last_updated": listing_last_update}
+                    **{obj_type + "last_updated": listing_last_update},
                 )
             ).distinct()
 
@@ -359,9 +359,7 @@ class RemoteMetadataHandlerPlugin(
                     try:
                         identifier = resolution_link.resolve(config)
                     except:
-                        logger.exception(
-                            f"Failed to resolve link {resolution_link!r}"
-                        )
+                        logger.exception(f"Failed to resolve link {resolution_link!r}")
                         resolution_link.last_update_status = "failed"
                     else:
                         logger.debug(

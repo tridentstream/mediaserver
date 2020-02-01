@@ -2,6 +2,11 @@
 Changelog
 ================================
 
+Version 1.0.4 (01-02-2020)
+--------------------------------
+
+* Bugfix: Unable to run project properly when running in background
+
 Version 1.0.3 (27-01-2020)
 --------------------------------
 

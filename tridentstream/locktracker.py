@@ -15,9 +15,7 @@ class PathLockTracker:
         self.expired = False
 
     def __enter__(self):
-        logger.debug(
-            f"Trying to figure out how to handle the lock of path:{self.path}"
-        )
+        logger.debug(f"Trying to figure out how to handle the lock of path:{self.path}")
 
         found_existing_lock = False
         with self.locktracker.build_lock:
@@ -50,9 +48,7 @@ class PathLockTracker:
                 if self.path in self.locktracker.locks:
                     del self.locktracker.locks[self.path]
                 else:
-                    logger.warning(
-                        f"Was unable to delete event for path:{self.path}"
-                    )
+                    logger.warning(f"Was unable to delete event for path:{self.path}")
 
 
 class LockTracker:

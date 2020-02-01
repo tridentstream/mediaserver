@@ -28,9 +28,7 @@ class PlayerServicePlugin(ServicePlugin):
         self.player_coordinators = {}
 
     def get_channels(self):
-        return [
-            ("", inject_into_scope(PlayerConsumer, {"service": self}))
-        ]
+        return [("", inject_into_scope(PlayerConsumer, {"service": self}))]
 
     def unload(self):
         for player_cordinator in self.player_coordinators.values():
@@ -45,9 +43,7 @@ class PlayerServicePlugin(ServicePlugin):
         return self.player_coordinators[user]
 
     def play(self, payload, viewstate, player_id):
-        logger.debug(
-            f"Sending play to player_id:{player_id} user:{viewstate.user!r}"
-        )
+        logger.debug(f"Sending play to player_id:{player_id} user:{viewstate.user!r}")
         player_coordinator = self.get_player_coordinator(viewstate.user)
 
         player = player_coordinator.get_player(player_id)
@@ -92,15 +88,11 @@ class Player:
         self.publish_state()
 
     def request_state(self, state, values):
-        logger.debug(
-            f"Requesting state on id:{self.player_id} {state}/{values!r}"
-        )
+        logger.debug(f"Requesting state on id:{self.player_id} {state}/{values!r}")
         self.command("request_state", state, values)
 
     def connect_viewstate(self, viewstate):
-        logger.debug(
-            f"Connected player {self.player_id} with viewstate {viewstate.id}"
-        )
+        logger.debug(f"Connected player {self.player_id} with viewstate {viewstate.id}")
         self.viewstate = viewstate
         self.viewstate.player_connected = True
 

@@ -261,7 +261,9 @@ class TorrentSearcherPluginBase(TorrentMixin, URLSearcherPluginBase):
 
     def __init__(self, config):
         super().__init__(config)
-        self.route_searcher_base_list_torrent = f"searcher_base_list_torrent_{self.name}"
+        self.route_searcher_base_list_torrent = (
+            f"searcher_base_list_torrent_{self.name}"
+        )
         router.register_handler(
             self.route_searcher_base_list_torrent,
             self.thomas_list_torrent,

@@ -1,7 +1,6 @@
 import logging
-import time
 import threading
-
+import time
 from functools import partial
 
 from django.conf import settings
@@ -102,9 +101,7 @@ class BaseListingService(ServicePlugin):
     # if queued the last 10 seconds, do not build
     def rebuild_listing(self, config, path, delay=False):
         threadify(self.listing_builder.get_listing, delay=delay and 3.0 or 0)(
-            config,
-            path,
-            use_background_recheck=False
+            config, path, use_background_recheck=False
         )
 
     def unload(self):

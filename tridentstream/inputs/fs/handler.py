@@ -24,7 +24,6 @@ from ...plugins import (
 )
 from ...vfs import FileSystem
 
-
 COMMIT_COUNTER = 10000
 
 logger = logging.getLogger(__name__)
@@ -362,7 +361,9 @@ class FilesystemInputPlugin(InputPlugin):
 
                 logger.info("Done scanning all paths.")
 
-            t = threadify(insert_into_vfs, cache_result=True)(self.vfs, queue, len(self.paths))
+            t = threadify(insert_into_vfs, cache_result=True)(
+                self.vfs, queue, len(self.paths)
+            )
 
             prefixes = set(p[0] for p in self.paths if p[0])
             if prefixes:

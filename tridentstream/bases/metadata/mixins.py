@@ -189,9 +189,7 @@ class PopulateMetadataJSONAPIMixin:
         relations = self.get_relations(request.user, items.keys())
 
         jsonapi_obj_mapping = {}  # maps listitem to metadata jsonapi objects
-        logger.info(
-            f"Seems like we should embed the serialized metadata {self.name}"
-        )
+        logger.info(f"Seems like we should embed the serialized metadata {self.name}")
 
         has_prefetch_related_denormalized = self.has_prefetch_related_denormalized()
         metadatas = [
@@ -378,9 +376,7 @@ class ResetFailedMixin:
         if not self.model or not issubclass(self.model, BaseUpdatable):
             return
 
-        logger.debug(
-            f"Requeuing failed for plugin {self.plugin_name}/{self.name}"
-        )
+        logger.debug(f"Requeuing failed for plugin {self.plugin_name}/{self.name}")
         self.model.objects.filter(
             last_update_status=BaseUpdatable.UPDATE_STATUS_FAILED
         ).update(last_update_status=BaseUpdatable.UPDATE_STATUS_PENDING)

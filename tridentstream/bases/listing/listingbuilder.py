@@ -307,7 +307,9 @@ class ListingBuilder:
         """
         Link listingitems with metadata
         """
-        logger.debug(f"Linking listingitems with metadata from root:{listing_build.listing_item_root.path}")
+        logger.debug(
+            f"Linking listingitems with metadata from root:{listing_build.listing_item_root.path}"
+        )
 
         listing_build.listingitem_mapping = {
             li.path: li

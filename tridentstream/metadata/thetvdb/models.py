@@ -83,7 +83,7 @@ class Metadata(BaseMetadata):
         identifier = int(self.identifier)
         tv_show = tvdb[identifier]
 
-        if tv_show.data["seriesName"] == u"** 403: Series Not Permitted **":
+        if tv_show.data["seriesName"] == "** 403: Series Not Permitted **":
             return
 
         self.genres.clear()
@@ -181,7 +181,7 @@ class ListingItemRelation(BaseListingItemRelation):
 
 
 THETVDB_LANGAUGE_REPLACEMENT_MAPPING = {
-    "da": {"ae": u"\xe6", "oe": u"\xf8", "aa": u"\xe5"}
+    "da": {"ae": "\xe6", "oe": "\xf8", "aa": "\xe5"}
 }
 
 

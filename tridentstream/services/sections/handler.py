@@ -359,9 +359,7 @@ class SectionsService(BaseListingService):
             listing_path = f"{input_path}/{config['path']}"
             plugin_path_pairs.append((input_config["input"], listing_path.strip("/")))
 
-        logger.info(
-            f"Trying to create listing for {plugin_path_pairs!r} - path:{path}"
-        )
+        logger.info(f"Trying to create listing for {plugin_path_pairs!r} - path:{path}")
         item = InputPluginManager.get_item_multiple(plugin_path_pairs)
         if "/" not in path and "display_name" in config:
             item.id = config["display_name"]

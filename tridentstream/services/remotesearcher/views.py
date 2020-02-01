@@ -45,7 +45,9 @@ class RemoteSearcherView(APIView):
                 path=path,
             )
         except ListingCache.DoesNotExist:
-            logger.warning(f"Unable to find cache for search_token:{search_token} path:{path}")
+            logger.warning(
+                f"Unable to find cache for search_token:{search_token} path:{path}"
+            )
             raise Http404
 
         return Item.unserialize(listing_cache.listing).get_item_from_path(sub_path)
