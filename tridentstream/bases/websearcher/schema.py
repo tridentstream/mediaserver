@@ -1,6 +1,10 @@
 from unplugged import RelatedPluginField, Schema, fields
 
-from ...plugins import BittorrentClientPlugin, MetadataHandlerPlugin
+from ...plugins import (
+    BittorrentClientPlugin,
+    MagnetResolverPlugin,
+    MetadataHandlerPlugin,
+)
 
 
 class URLSearcherSchema(Schema):
@@ -18,6 +22,11 @@ class TorrentSearcherSchema(URLSearcherSchema):
     )
     daily_download_count_cap = fields.Integer(
         default=12, ui_schema={"ui:title": "Daily download cap"}
+    )
+    magnet_resolver = RelatedPluginField(
+        plugin_type=MagnetResolverPlugin,
+        required=False,
+        ui_schema={"ui:title": "Resolve magnet links"},
     )
 
 

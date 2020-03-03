@@ -5,6 +5,7 @@ from .history import HistoryPlugin  # NOQA
 from .imagecache import ImageCachePlugin  # NOQA
 from .indexer import IndexerPlugin, PathIndexer  # NOQA
 from .input import InputPlugin, InputPluginManager  # NOQA
+from .magnetresolver import MagnetResolverPlugin
 from .metadatahandler import MetadataHandlerPlugin  # NOQA
 from .metadataparser import MetadataParserPlugin  # NOQA
 from .notifier import Notification, NotifierPlugin  # NOQA
