@@ -64,7 +64,6 @@ setup(
         'imdbparser>=1.0.20,<1.99.99',
         'malparser>=1.1.7,<1.99.99',
         'thomas>=2.2.3,<2.99.99',
-        'magnet2torrent>=1.0.2,<1.0.99',
         'timeoutthreadpoolexecutor>=1.0.2,<1.0.99',
         'certifi',
         'pillow',
