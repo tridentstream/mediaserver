@@ -22,7 +22,7 @@ from twisted.application.service import IServiceMaker
 from twisted.internet import endpoints, reactor
 from twisted.plugin import IPlugin
 from twisted.python import log, usage
-from twisted.web import resource, server
+from twisted.web import resource, server, static
 
 os.environ["DJANGO_SETTINGS_MODULE"] = "main.settings"
 
@@ -88,6 +88,11 @@ class SchedulerService(service.Service):
 
     def stopService(self):
         self.scheduler.shutdown()
+
+
+class File(static.File):
+    def directoryListing(self):
+        return self.forbidden
 
 
 @implementer(IServiceMaker, IPlugin)
@@ -179,6 +184,15 @@ class ServiceMaker(object):
         r.putChild(b"stream", http_output.resource)
 
         settings.THOMAS_HTTP_OUTPUT = http_output
+
+        from django.contrib import admin
+
+        r.putChild(
+            settings.STATIC_URL.strip("/").encode("utf-8"),
+            File(
+                os.path.join(os.path.dirname(django.contrib.admin.__file__), "static")
+            ),
+        )
 
         # Gluing it all together
         site = server.Site(r)
