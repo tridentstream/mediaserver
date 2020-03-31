@@ -65,6 +65,7 @@ class EmbeddedMetadataHandlerPlugin(
             "rating": "rating",
             "duration": "duration",
             "available": "available",
+            "group": "release_group",
         },
         "metadata:bittorrent": {
             "seeders": "bittorrent_seeders",
@@ -77,6 +78,8 @@ class EmbeddedMetadataHandlerPlugin(
             "container": "mediainfo_container",
             "source": "mediainfo_source",
             "scene": "mediainfo_scene",
+            "audio": "mediainfo_audio",
+            "dual_audio": "mediainfo_dual_audio",
             "best": "mediainfo_best",
         },
         "metadata:episodeinfo": {

@@ -151,6 +151,11 @@ class StoreService(BaseListingService):
                                 "plugin_type": "metadatahandler",
                                 "name": "imdb",
                             },
+                            {
+                                "simpleAdminMethod": "lookupPlugin",
+                                "plugin_type": "metadatahandler",
+                                "name": "mal",
+                            },
                         ],
                     },
                     {

@@ -25,12 +25,15 @@ class EmbeddedInfo(models.Model):
     primary_language = models.CharField(max_length=50, null=True)
 
     file_source = models.CharField(null=True, max_length=100)
+    group = models.CharField(max_length=300, null=True)
 
     mediainfo_resolution = models.CharField(null=True, max_length=100)
     mediainfo_codec = models.CharField(null=True, max_length=100)
     mediainfo_container = models.CharField(null=True, max_length=100)
     mediainfo_source = models.CharField(null=True, max_length=100)
     mediainfo_scene = models.BooleanField(default=False)
+    mediainfo_dual_audio = models.BooleanField(default=False)
+    mediainfo_audio = models.CharField(null=True, max_length=100)
     mediainfo_best = models.BooleanField(
         default=False
     )  # probably the best choice if you have to choose
