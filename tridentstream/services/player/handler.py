@@ -134,6 +134,8 @@ class PlayerCoordinator:
             logger.debug(f"Player {player_id} gone")
             player.close()
 
+        self.command("disconnected", {"player_id": player_id})
+
     def get_player(self, player_id):
         return self.players.get(player_id)
 
