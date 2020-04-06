@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import os
+import pkg_resources
 
 import environ
 
@@ -14,6 +15,7 @@ env = environ.Env(
     DATABASE_ROOT=(str, "dbs"),
     INSTALLED_APPS=(list, []),
     DISABLE_CSRF_SECURITY=(bool, True),
+    PACKAGE_ROOT=(str, ""),
 )
 env.read_env(env.str("ENV_PATH", ".environ"))
 
@@ -262,6 +264,9 @@ DATABASES = {
     "default": env.db(default="sqlite:///db.sqlite3?timeout=120"),
 }
 
+PLUGIN_ENTRY_POINT = "tridentstream.apps"
+
+INSTALLED_APPS += tuple(entry_point.module_name for entry_point in pkg_resources.iter_entry_points(PLUGIN_ENTRY_POINT) if entry_point.name == "app")
 INSTALLED_APPS += tuple(env("INSTALLED_APPS"))
 
 SECRET_KEY = env("SECRET_KEY")
@@ -269,7 +274,10 @@ SECRET_KEY = env("SECRET_KEY")
 ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
 MEDIA_ROOT = env("MEDIA_ROOT")
-DATABASE_ROOT = env("MEDIA_ROOT")
+DATABASE_ROOT = env("DATABASE_ROOT")
+PACKAGE_ROOT = env("PACKAGE_ROOT")
+
+TWISTD_PIDFILE = None
 
 if env("DISABLE_CSRF_SECURITY"):
     MIDDLEWARE += ("main.disablecsrf.DisableCSRFMiddleware",)

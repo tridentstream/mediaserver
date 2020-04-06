@@ -2,8 +2,19 @@
 Changelog
 ================================
 
-Version 1.0.5 (15-02-2020)
+Version 1.0.6 (06-04-2020)
 --------------------------------
+
+* Changed: External plugins are now loaded via entry points
+
+* Bugfix: Disconnected player not announced.
+
+Version 1.0.5 (31-03-2020)
+--------------------------------
+
+* Added: more fields to embedded data
+* Added: MAL metadata to store as default
+* Added: magnet2torrent support as external plugin
 
 * Bugfix: Updated requirement
 

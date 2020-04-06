@@ -151,6 +151,8 @@ class ServiceMaker(object):
 
         from django.conf import settings
 
+        settings.TWISTD_PIDFILE = options.parent['pidfile']
+
         if options["clearcache"]:
             settings.DEBUG_CLEAR_CACHE = True
             from django.core.cache import cache

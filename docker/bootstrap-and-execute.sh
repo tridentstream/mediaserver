@@ -11,6 +11,7 @@ pip install -r requirements.txt
 # install plugins
 shopt -s nullglob
 if [ -d "packages" ]; then
+    PACKAGE_ROOT=`pwd`/packages
     for filename in packages/*.{tar.gz,zip,whl}; do
         pip install "$filename"
     done
