@@ -38,7 +38,7 @@ setup(
     include_package_data=True,
     install_requires=[
         'txasgiresource>=2.0.0,<2.99.99',
-        'twisted>=19.10.0,<19.99.99',
+        'twisted>=20.3.0',
         'service-identity>=18.1.0,<18.99.99',
         'channels>=2.0.0,<2.99.99',
         'Django>=2.0.0,<2.99.99',
