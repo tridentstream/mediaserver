@@ -2,6 +2,12 @@
 Changelog
 ================================
 
+Version 1.0.7 (10-04-2020)
+--------------------------------
+
+* Bugfix: Problems related to package installation
+* Bugfix: Windows specific pidfile issue
+
 Version 1.0.6 (06-04-2020)
 --------------------------------
 
