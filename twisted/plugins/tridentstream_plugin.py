@@ -3,14 +3,17 @@ from concurrent.futures import thread  # isort:skip
 
 thread.ThreadPoolExecutor = TimeoutThreadPoolExecutor  # isort:skip
 
-import asyncio
+import asyncio  # isort:skip
+import daphne.server  # isort:skip
+from twisted.internet import reactor  # isort:skip
+asyncio.set_event_loop(reactor._asyncioEventloop)  # isort:skip
+
 import logging
 import logging.handlers
 import os
 import sys
 import time
 
-import daphne.server
 import django
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from channels.routing import get_default_application
@@ -19,7 +22,7 @@ from zope.interface import implementer
 
 from twisted.application import service
 from twisted.application.service import IServiceMaker
-from twisted.internet import endpoints, reactor
+from twisted.internet import endpoints
 from twisted.plugin import IPlugin
 from twisted.python import log, usage
 from twisted.web import resource, server, static
@@ -192,9 +195,7 @@ class ServiceMaker(object):
 
         r.putChild(
             settings.STATIC_URL.strip("/").encode("utf-8"),
-            File(
-                os.path.join(os.path.dirname(django.contrib.admin.__file__), "static")
-            ),
+            File(settings.STATIC_ROOT.encode("utf-8")),
         )
 
         # Gluing it all together
