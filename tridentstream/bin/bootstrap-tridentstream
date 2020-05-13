@@ -75,6 +75,9 @@ if __name__ == '__main__':
     print('Creating cache table')
     management.call_command('createcachetable')
 
+    print('Collecting static')
+    management.call_command('collectstatic', '--no-input')
+
     from unplugged.models import Plugin
     if len(Plugin.objects.all()) == 0:
         print(f'No plugins found, pushing increment ID above {PUSH_PLUGIN_ID}')
