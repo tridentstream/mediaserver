@@ -159,9 +159,11 @@ class PopulateMetadataJSONAPIMixin:
                 listingitem__in=listingitem_ids
             )
             .filter(Q(user__isnull=True) | Q(user=user))
-            .select_related(*select_related)
-            .prefetch_related(*prefetch_related)
         )
+        if select_related:
+            relations = relations.select_related(*select_related)
+        if prefetch_related:
+            relations = relations.prefetch_related(*prefetch_related)
 
         retval = defaultdict(list)
         for relation in relations:
