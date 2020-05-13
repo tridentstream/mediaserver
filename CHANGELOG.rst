@@ -2,6 +2,15 @@
 Changelog
 ================================
 
+Version 1.0.8 ()
+--------------------------------
+
+* Changed: updated unplugged and txasgiresource minimum version
+* Changed: collecting and serving static
+
+* Bugfix: fixed strangeness with django select_related and huge memory consumption
+
+
 Version 1.0.7 (10-04-2020)
 --------------------------------
 
