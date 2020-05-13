@@ -207,6 +207,7 @@ APPEND_SLASH = False
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = "/djangostatic/"
+STATIC_ROOT = env("STATIC_ROOT")
 MEDIA_URL = "/media/"
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
