@@ -2,7 +2,7 @@
 Changelog
 ================================
 
-Version 1.0.8 ()
+Version 1.0.8 (14-05-2020)
 --------------------------------
 
 * Changed: updated unplugged and txasgiresource minimum version
